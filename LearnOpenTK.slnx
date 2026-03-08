@@ -1,0 +1,37 @@
+<Solution>
+    <Folder Name="/Chapter1/">
+      <Project Path="Chapter1/1-CreatingAWindow/1-CreatingAWindow.csproj" />
+      <Project Path="Chapter1/2-HelloTriangle/2-HelloTriangle.csproj" />
+      <Project Path="Chapter1/3-ElementBufferObjects/3-ElementBufferObjects.csproj" />
+
+      <Project Path="Chapter1/4-Shaders-InsAndOuts/4-Shaders-InsAndOuts.csproj" />
+      <Project Path="Chapter1/4-Shaders-Uniforms/4-Shaders-Uniforms.csproj" />
+      <Project Path="Chapter1/4-Shaders-MoreAttributes/4-Shaders-MoreAttributes.csproj" />
+
+      <Project Path="Chapter1/5-Textures/5-Textures.csproj" />
+      <Project Path="Chapter1/6-MultipleTextures/6-MultipleTextures.csproj" />
+      <Project Path="Chapter1/7-Transformations/7-Transformations.csproj" />
+      <Project Path="Chapter1/8-CoordinatesSystems/8-CoordinatesSystems.csproj" />
+      <Project Path="Chapter1/9-Camera/9-Camera.csproj" />
+    </Folder>
+
+    <Folder Name="/Chapter2/">
+      <Project Path="Chapter2/1-Colors/1-Colors.csproj" />
+      <Project Path="Chapter2/2-BasicLighting/2-BasicLighting.csproj" />
+      <Project Path="Chapter2/3-Materials/3-Materials.csproj" />
+      <Project Path="Chapter2/4-LightingMaps/4-LightingMaps.csproj" />
+
+      <Project Path="Chapter2/5-LightCasters-DirectionalLights/5-LightCasters-DirectionalLights.csproj" />
+      <Project Path="Chapter2/5-LightCasters-PointLights/5-LightCasters-PointLights.csproj" />
+      <Project Path="Chapter2/5-LightCasters-Spotlight/5-LightCasters-Spotlight.csproj" />
+
+      <Project Path="Chapter2/6-MultipleLights/6-MultipleLights.csproj" />
+    </Folder>
+    
+    
+    <Folder Name="/Chapter3/">
+        <Project Path="Chapter3/1-Model-Loading/1-Model-Loading.csproj" />
+    </Folder>
+
+  <Project Path="Common/Common.csproj" />
+</Solution>
