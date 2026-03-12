@@ -32,6 +32,10 @@
     <Folder Name="/Chapter3/">
         <Project Path="Chapter3/1-Model-Loading/1-Model-Loading.csproj" />
     </Folder>
+    <Folder Name="/Chapter4/">
+        <Project Path="Chapter4/1-Depth-Testing/1-Depth-Testing.csproj" />
+        <Project Path="Chapter4/2-Depth-Testing-View/2-Depth-Testing-View.csproj" />
+    </Folder>
 
   <Project Path="Common/Common.csproj" />
 </Solution>
