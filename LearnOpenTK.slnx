@@ -34,7 +34,8 @@
     </Folder>
     <Folder Name="/Chapter4/">
         <Project Path="Chapter4/1-Depth-Testing/1-Depth-Testing.csproj" />
-        <Project Path="Chapter4/2-Depth-Testing-View/2-Depth-Testing-View.csproj" />
+        <Project Path="Chapter4/1-Depth-Testing-View/1-Depth-Testing-View.csproj" />
+        <Project Path="Chapter4/2-Stencil-Testing/2-Stencil-Testing.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
