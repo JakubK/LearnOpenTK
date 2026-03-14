@@ -37,6 +37,7 @@
         <Project Path="Chapter4/1-Depth-Testing-View/1-Depth-Testing-View.csproj" />
         <Project Path="Chapter4/2-Stencil-Testing/2-Stencil-Testing.csproj" />
         <Project Path="Chapter4/3-Blending-Discard/3-Blending-Discard.csproj" />
+        <Project Path="Chapter4/3-Blending-Sort/3-Blending-Sort.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
