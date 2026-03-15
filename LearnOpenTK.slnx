@@ -38,6 +38,10 @@
         <Project Path="Chapter4/2-Stencil-Testing/2-Stencil-Testing.csproj" />
         <Project Path="Chapter4/3-Blending-Discard/3-Blending-Discard.csproj" />
         <Project Path="Chapter4/3-Blending-Sort/3-Blending-Sort.csproj" />
+        <Project Path="Chapter4/4-Face-Culling-Exercise1/4-Face-Culling-Exercise1.csproj" />
+        <Project Path="Chapter4/5-Framebuffers-Exercise1/5-Framebuffers-Exercise1.csproj" />
+        <Project Path="Chapter4/5-Framebuffers/5-Framebuffers.csproj" />
+        <Project Path="Chapter4/6-Cubemaps-Skybox/6-Cubemaps-Skybox.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
