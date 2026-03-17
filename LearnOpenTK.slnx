@@ -41,7 +41,9 @@
         <Project Path="Chapter4/4-Face-Culling-Exercise1/4-Face-Culling-Exercise1.csproj" />
         <Project Path="Chapter4/5-Framebuffers-Exercise1/5-Framebuffers-Exercise1.csproj" />
         <Project Path="Chapter4/5-Framebuffers/5-Framebuffers.csproj" />
+        <Project Path="Chapter4/6-Cubemaps-Environment-Mapping/6-Cubemaps-Environment-Mapping.csproj" />
         <Project Path="Chapter4/6-Cubemaps-Skybox/6-Cubemaps-Skybox.csproj" />
+        <Project Path="Chapter4/8-Advanced-Glsl-Ubo/8-Advanced-Glsl-Ubo.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
