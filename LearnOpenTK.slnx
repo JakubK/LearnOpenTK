@@ -35,6 +35,9 @@
     <Folder Name="/Chapter4/">
         <Project Path="Chapter4/1-Depth-Testing/1-Depth-Testing.csproj" />
         <Project Path="Chapter4/1-Depth-Testing-View/1-Depth-Testing-View.csproj" />
+        <Project Path="Chapter4/10-1-Instancing-Quads/10-1-Instancing-Quads.csproj" />
+        <Project Path="Chapter4/10-2-Asteroids/10-2-Asteroids.csproj" />
+        <Project Path="Chapter4/10-3-Asteroids-Instanced/10-3-Asteroids-Instanced.csproj" />
         <Project Path="Chapter4/2-Stencil-Testing/2-Stencil-Testing.csproj" />
         <Project Path="Chapter4/3-Blending-Discard/3-Blending-Discard.csproj" />
         <Project Path="Chapter4/3-Blending-Sort/3-Blending-Sort.csproj" />

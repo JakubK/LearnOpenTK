@@ -42,6 +42,11 @@ public class Mesh
         
         SetupMesh();
     }
+
+    public int GetVao()
+    {
+        return _vao;
+    }
     
     public void Draw(Shader shader)
     {

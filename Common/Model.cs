@@ -16,6 +16,16 @@ public class Model
     {
         LoadModel(path);
     }
+
+    public List<Mesh.Texture> GetTexturesLoaded()
+    {
+        return _texturesLoaded;
+    }
+
+    public List<Mesh> GetMeshes()
+    {
+        return _meshes;
+    }
     
     public void Draw(Shader shader)
     {
