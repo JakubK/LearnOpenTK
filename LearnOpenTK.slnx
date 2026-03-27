@@ -53,6 +53,10 @@
         <Project Path="Chapter4/9-2-Geometry-Shader-Exploding/9-2-Geometry-Shader-Exploding.csproj" />
         <Project Path="Chapter4/9-3-Geometry-Shader-Normals/9-3-Geometry-Shader-Normals.csproj" />
     </Folder>
+    <Folder Name="/Chapter5/">
+        <Project Path="Chapter5/1-Advanced-Lighting/1-Advanced-Lighting.csproj" />
+        <Project Path="Chapter5/2-Gamma-Correction/2-Gamma-Correction.csproj" />
+    </Folder>
 
   <Project Path="Common/Common.csproj" />
 </Solution>

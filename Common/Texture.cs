@@ -10,7 +10,7 @@ namespace LearnOpenTK.Common
     {
         public readonly int Handle;
 
-        public static Texture LoadFromFile(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+        public static Texture LoadFromFile(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat, bool gammaCorrected = false)
         {
             // Generate handle
             int handle = GL.GenTexture();
@@ -21,6 +21,13 @@ namespace LearnOpenTK.Common
 
             // For this example, we're going to use .NET's built-in System.Drawing library to load textures.
 
+            var internalFormat = PixelInternalFormat.Rgba;
+            
+            if (gammaCorrected)
+            {
+                internalFormat = PixelInternalFormat.SrgbAlpha;
+            }
+            
             // OpenGL has it's texture origin in the lower left corner instead of the top left corner,
             // so we tell StbImageSharp to flip the image when loading.
             StbImage.stbi_set_flip_vertically_on_load(1);
@@ -39,7 +46,7 @@ namespace LearnOpenTK.Common
                 //   The format of the pixels, explained above. Since we loaded the pixels as RGBA earlier, we need to use PixelFormat.Rgba.
                 //   Data type of the pixels.
                 //   And finally, the actual pixels.
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, internalFormat, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
             }
             
             // Now that our texture is loaded, we can set a few settings to affect how the image appears on rendering.
