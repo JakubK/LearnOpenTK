@@ -56,6 +56,9 @@
     <Folder Name="/Chapter5/">
         <Project Path="Chapter5/1-Advanced-Lighting/1-Advanced-Lighting.csproj" />
         <Project Path="Chapter5/2-Gamma-Correction/2-Gamma-Correction.csproj" />
+        <Project Path="Chapter5/3-1-Shadow-Mapping-Depth/3-1-Shadow-Mapping-Depth.csproj" />
+        <Project Path="Chapter5/3-2-Shadow-Mapping-Base/3-2-Shadow-Mapping-Base.csproj" />
+        <Project Path="Chapter5/3-3-Shadow-Mapping/3-3-Shadow-Mapping.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
