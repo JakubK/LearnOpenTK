@@ -9,13 +9,16 @@ namespace LearnOpenTK
 {
     public class Window : GameWindow
     {
+        private bool shadows = true;
+        private bool shadowsPressed = true;
+        
         private int depthMapFbo;
-        private int depthMap;
+        private int depthCubeMap;
         
         private float nearPlane = 1f;
-        private float farPlane = 7.5f;
+        private float farPlane = 25f;
         
-        private Vector3 LightPos = new Vector3(-2f, 4f, -1f);
+        private Vector3 LightPos = new(0f);
         private Texture floorTexture;
         
         private float[] planeVertices = {
@@ -35,7 +38,6 @@ namespace LearnOpenTK
         
         private Shader _shader;
         private Shader _depthShader;
-        private Shader _debugShader;
         
         private Camera _camera;
 
@@ -58,6 +60,7 @@ namespace LearnOpenTK
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.CullFace);
             
             // plane VAO
             planeVao = GL.GenVertexArray();
@@ -81,36 +84,36 @@ namespace LearnOpenTK
             
             // configure depth map FBO
             depthMapFbo = GL.GenFramebuffer();
-            depthMap = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, depthMap);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent, ShadowWidth, ShadowHeight, 0, PixelFormat.DepthComponent, PixelType.Float, 0);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge); // Fixes issue with repeated shadows
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge); // Fixes issue with repeated shadows
+            depthCubeMap = GL.GenTexture();
+            GL.BindTexture(TextureTarget.TextureCubeMap, depthCubeMap);
+            for (int i = 0; i < 6; i++)
+            {
+                GL.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, PixelInternalFormat.DepthComponent, ShadowWidth, ShadowHeight, 0, PixelFormat.DepthComponent, PixelType.Float, 0);
+            }
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapR, (int)TextureWrapMode.ClampToEdge);
             // attach depth texture fbo to fbo depth buffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, depthMapFbo);
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, TextureTarget.Texture2D, depthMap, 0 );
+            GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, depthCubeMap, 0 );
             GL.DrawBuffer(DrawBufferMode.None);
             GL.ReadBuffer(ReadBufferMode.None);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             
             // shader configuration
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
-            _depthShader = new Shader("Shaders/depth.vert", "Shaders/depth.frag");
-            _debugShader = new Shader("Shaders/debug.vert", "Shaders/debug.frag");
+            _shader = new Shader("Shaders/point_shadows.vert", "Shaders/point_shadows.frag");
+            _depthShader = new Shader("Shaders/point_shadows_depth.vert", "Shaders/point_shadows_depth.frag", "Shaders/point_shadows_depth.geo");
             
             _shader.Use();
             _shader.SetInt("diffuseTexture", 0);
-            _shader.SetInt("shadowMap", 1);
-            
-            _debugShader.Use();
-            _debugShader.SetInt("depthMap", 0);
+            _shader.SetInt("depthMap", 1);
             
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
 
             CursorState = CursorState.Grabbed;
-        }
+        }   
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -118,93 +121,107 @@ namespace LearnOpenTK
             
             GL.ClearColor(0.1f,0.1f,0.1f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            // move light position over time
+            LightPos.Z = (float)(MathHelper.Sin((float)GLFW.GetTime() * 0.5) * 3.0);
+            
+            // 0. create depth cubemap transformation matrices
+            var shadowProj = Matrix4.CreatePerspectiveFieldOfView(
+                MathHelper.DegreesToRadians(90.0f),
+                1.0f,
+                nearPlane,
+                farPlane
+            );
+            var shadowTransforms = new List<Matrix4>();
+            
+            shadowTransforms.Add(Matrix4.LookAt(LightPos, LightPos + new Vector3(1f, 0f, 0f), new Vector3(0f, -1f, 0f)) * shadowProj);
+            shadowTransforms.Add(Matrix4.LookAt(LightPos, LightPos + new Vector3(-1f, 0f, 0f), new Vector3(0f, -1f, 0f)) * shadowProj);
+            shadowTransforms.Add(Matrix4.LookAt(LightPos, LightPos + new Vector3(0, 1f, 0f), new Vector3(0f, 0f, 1f)) * shadowProj);
+            shadowTransforms.Add(Matrix4.LookAt(LightPos, LightPos + new Vector3(0f, -1f, 0f), new Vector3(0f, 0f, -1f)) * shadowProj);
+            shadowTransforms.Add(Matrix4.LookAt(LightPos, LightPos + new Vector3(0f, 0f, 1f), new Vector3(0f, -1f, 0f)) * shadowProj);
+            shadowTransforms.Add(Matrix4.LookAt(LightPos, LightPos + new Vector3(0f, 0f, -1f), new Vector3(0f, -1f, 0f)) * shadowProj);
             
             // 1. Render Depth of scene to texture (from light perspective)
-            var lightProjection = Matrix4.CreateOrthographicOffCenter(
-                -10.0f, 10.0f,
-                -10.0f, 10.0f,
-                nearPlane, farPlane
-            );
-            var lightView = Matrix4.LookAt(
-                LightPos,
-                Vector3.Zero,
-                Vector3.UnitY
-            );
-            
-            var lightSpaceMatrix = lightView * lightProjection; // reversed order
-            
-            _depthShader.Use();
-            _depthShader.SetMatrix4("lightSpaceMatrix", lightSpaceMatrix);
-            
             GL.Viewport(0, 0, ShadowWidth, ShadowHeight);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, depthMapFbo);
             
             GL.Clear(ClearBufferMask.DepthBufferBit);
-            
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, floorTexture.Handle);
-            RenderScene(_depthShader);
+            _depthShader.Use();
+            for (int i = 0; i < 6; ++i)
+            {
+                _depthShader.SetMatrix4($"shadowMatrices[{i}]", shadowTransforms[i]);
+            }
+            _depthShader.SetFloat("far_plane", farPlane);
+            _depthShader.SetVector3("lightPos", LightPos);
+            RenderScene(_depthShader, false);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             
-            // Reset Viewport
+            // 2. Render Scene as normal
             GL.Viewport(0, 0, 800, 600);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             
-            // Render Scene as normal using generated depth/shadow map
             _shader.Use();
             _shader.SetMatrix4("projection", _camera.GetProjectionMatrix());
             _shader.SetMatrix4("view", _camera.GetViewMatrix());
             
             _shader.SetVector3("viewPos", _camera.Position);
             _shader.SetVector3("lightPos", LightPos);
-            _shader.SetMatrix4("lightSpaceMatrix", lightSpaceMatrix);
+            _shader.SetBool("shadows", shadows); // Switch by B button
+            _shader.SetFloat("far_plane", farPlane);
             
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, floorTexture.Handle);
             GL.ActiveTexture(TextureUnit.Texture1);
-            GL.BindTexture(TextureTarget.Texture2D, depthMap);
-            RenderScene(_shader);
-            
-            // render Depth map to quad for visual debugging
-            // _debugShader.Use();
-            // _debugShader.SetFloat("near_plane", nearPlane);
-            // _debugShader.SetFloat("far_plane", farPlane);
-            // GL.ActiveTexture(TextureUnit.Texture0);
-            // GL.BindTexture(TextureTarget.Texture2D, depthMap);
-            // RenderQuad();
+            GL.BindTexture(TextureTarget.TextureCubeMap, depthCubeMap);
+            RenderScene(_shader, true);
             
             SwapBuffers();
         }
 
-        private void RenderScene(Shader shader)
+        private void RenderScene(Shader shader, bool hasReverseNormals) // hasReverseNormals param added to skip setting uniform that does not exist, preventing exception without changes in Shader class
         {
-            // floor
+            // Room Cube
             var model = Matrix4.Identity;
+            model = Matrix4.CreateScale(new Vector3(5f)) * model;
             shader.SetMatrix4("model", model);
-            GL.BindVertexArray(planeVao);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-            GL.BindVertexArray(0);
-            
-            // cubes
+            GL.Disable(EnableCap.CullFace); // We want to render the inside of a cube
+            if (hasReverseNormals)
+            {
+                shader.SetInt("reverse_normals", 1); // Invert normals so that lighting inside works as expected
+            }
+            RenderCube();
+            if (hasReverseNormals)
+            {
+                shader.SetInt("reverse_normals", 0);
+            }
+            GL.Enable(EnableCap.CullFace);
+
+            // Cubes
             model = Matrix4.Identity;
-            model = Matrix4.CreateTranslation(new Vector3(0f, 1.5f, 0f)) * model;
+            model = Matrix4.CreateTranslation(new Vector3(4f, -3.5f, 1f)) * model;
+            model = Matrix4.CreateScale(new Vector3(0.75f)) * model;
+            shader.SetMatrix4("model", model);
+            RenderCube();
+            
+            model = Matrix4.Identity;
+            model = Matrix4.CreateTranslation(new Vector3(-3f, -1f, 0)) * model;
             model = Matrix4.CreateScale(new Vector3(0.5f)) * model;
             shader.SetMatrix4("model", model);
             RenderCube();
             
             model = Matrix4.Identity;
-            model = Matrix4.CreateTranslation(new Vector3(2f, 0f, 1f)) * model;
+            model = Matrix4.CreateTranslation(new Vector3(-1.5f, 1f, 1.5f)) * model;
             model = Matrix4.CreateScale(new Vector3(0.5f)) * model;
             shader.SetMatrix4("model", model);
             RenderCube();
             
             model = Matrix4.Identity;
-            model = Matrix4.CreateTranslation(new Vector3(-1f, 0f, 2f)) * model;
+            model = Matrix4.CreateTranslation(new Vector3(-1.5f, 2f, -3f)) * model;
             model = Matrix4.CreateFromAxisAngle(
                 Vector3.Normalize(new Vector3(1.0f, 0.0f, 1.0f)),
                 MathHelper.DegreesToRadians(60.0f)
             ) * model;
-            model = Matrix4.CreateScale(new Vector3(0.25f)) * model;
+            model = Matrix4.CreateScale(new Vector3(0.75f)) * model;
             shader.SetMatrix4("model", model);
             RenderCube();
         }
@@ -291,39 +308,6 @@ namespace LearnOpenTK
             GL.BindVertexArray(0);
         }
 
-        private int quadVao = 0;
-        private int quadVbo = 0;
-        
-        private void RenderQuad()
-        {
-            if (quadVao == 0)
-            {
-                float[] quadVertices = {
-                    // positions        // texture Coords
-                    -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-                    -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-                    1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-                    1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-                };
-                // setup plane VAO
-                quadVao = GL.GenVertexArray();
-                quadVbo = GL.GenBuffer();
-                GL.BindVertexArray(quadVao);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, quadVbo);
-                GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * quadVertices.Length, quadVertices, BufferUsageHint.StaticDraw);
-                
-                GL.EnableVertexAttribArray(0);
-                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
-                GL.EnableVertexAttribArray(1);
-                GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), (3 * sizeof(float)));
-            }
-            
-            // Render the cube
-            GL.BindVertexArray(quadVao);
-            GL.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
-            GL.BindVertexArray(0);
-        }
-
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
@@ -342,6 +326,16 @@ namespace LearnOpenTK
 
             const float cameraSpeed = 1.5f;
             const float sensitivity = 0.2f;
+            
+            if (input.IsKeyDown(Keys.B) && !shadowsPressed) 
+            {
+                shadows = !shadows;
+                shadowsPressed = true;
+            }
+            if (input.IsKeyReleased(Keys.B)) 
+            {
+                shadowsPressed = false;
+            }
 
             if (input.IsKeyDown(Keys.W))
             {

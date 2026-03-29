@@ -68,7 +68,6 @@ namespace LearnOpenTK
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
             GL.Enable(EnableCap.DepthTest);
-            GL.Enable(EnableCap.Blend);
             
             positions = LightPositions
                 .SelectMany(v => new[] { v.X, v.Y, v.Z })

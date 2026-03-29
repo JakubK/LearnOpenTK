@@ -58,7 +58,6 @@ namespace LearnOpenTK
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
             GL.Enable(EnableCap.DepthTest);
-            GL.Enable(EnableCap.Blend);
             
             // plane VAO
             planeVao = GL.GenVertexArray();
@@ -167,12 +166,12 @@ namespace LearnOpenTK
             RenderScene(_shader);
             
             // render Depth map to quad for visual debugging
-            _debugShader.Use();
-            _debugShader.SetFloat("near_plane", nearPlane);
-            _debugShader.SetFloat("far_plane", farPlane);
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, depthMap);
-            RenderQuad();
+            // _debugShader.Use();
+            // _debugShader.SetFloat("near_plane", nearPlane);
+            // _debugShader.SetFloat("far_plane", farPlane);
+            // GL.ActiveTexture(TextureUnit.Texture0);
+            // GL.BindTexture(TextureTarget.Texture2D, depthMap);
+            // RenderQuad();
             
             SwapBuffers();
         }

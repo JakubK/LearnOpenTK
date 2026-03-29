@@ -92,13 +92,25 @@ namespace LearnOpenTK.Common
             for (var i = 0; i < numberOfUniforms; i++)
             {
                 // get the name of this uniform,
-                var key = GL.GetActiveUniform(Handle, i, out _, out _);
-
-                // get the location,
-                var location = GL.GetUniformLocation(Handle, key);
-
-                // and then add it to the dictionary.
-                _uniformLocations.Add(key, location);
+                var key = GL.GetActiveUniform(Handle, i, out var size, out var uniformType);
+                if (size == 1)
+                {
+                    // get the location,
+                    var location = GL.GetUniformLocation(Handle, key);
+                    // and then add it to the dictionary.
+                    _uniformLocations.Add(key, location);
+                }
+                else
+                {
+                    // Most likely array type, needs special handler to register all locations
+                    for (int j = 0; j < size; j++)
+                    {
+                        var newKey = key.Replace("[0]", $"[{j}]");
+                        // get the location,
+                        var location = GL.GetUniformLocation(Handle, newKey);
+                        _uniformLocations.Add(newKey, location);
+                    }
+                }
             }
         }
 
@@ -162,6 +174,17 @@ namespace LearnOpenTK.Common
         {
             GL.UseProgram(Handle);
             GL.Uniform1(_uniformLocations[name], data);
+        }
+
+        /// <summary>
+        /// Set a uniform bool on this shader.
+        /// </summary>
+        /// <param name="name">The name of the uniform</param>
+        /// <param name="data">The data to set</param>
+        public void SetBool(string name, bool data)
+        {
+            GL.UseProgram(Handle);
+            GL.Uniform1(_uniformLocations[name], data ? 1 : 0);
         }
 
         /// <summary>

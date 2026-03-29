@@ -59,6 +59,12 @@
         <Project Path="Chapter5/3-1-Shadow-Mapping-Depth/3-1-Shadow-Mapping-Depth.csproj" />
         <Project Path="Chapter5/3-2-Shadow-Mapping-Base/3-2-Shadow-Mapping-Base.csproj" />
         <Project Path="Chapter5/3-3-Shadow-Mapping/3-3-Shadow-Mapping.csproj" />
+        <Project Path="Chapter5/3-4-Point-Shadows/3-4-Point-Shadows.csproj" />
+        <Project Path="Chapter5/3-5-Point-Shadows-Soft/3-5-Point-Shadows-Soft.csproj" />
+        <Project Path="Chapter5/4-Normal-Mapping/4-Normal-Mapping.csproj" />
+        <Project Path="Chapter5/5-1-Parallax-Mapping/5-1-Parallax-Mapping.csproj" />
+        <Project Path="Chapter5/5-2-Steep-Parallax-Mapping/5-2-Steep-Parallax-Mapping.csproj" />
+        <Project Path="Chapter5/5-3-Parallax-Occlusion-Mapping/5-3-Parallax-Occlusion-Mapping.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
