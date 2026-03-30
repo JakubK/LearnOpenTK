@@ -65,6 +65,7 @@
         <Project Path="Chapter5/5-1-Parallax-Mapping/5-1-Parallax-Mapping.csproj" />
         <Project Path="Chapter5/5-2-Steep-Parallax-Mapping/5-2-Steep-Parallax-Mapping.csproj" />
         <Project Path="Chapter5/5-3-Parallax-Occlusion-Mapping/5-3-Parallax-Occlusion-Mapping.csproj" />
+        <Project Path="Chapter5/6-HDR/6-HDR.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
