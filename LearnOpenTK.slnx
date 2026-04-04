@@ -67,6 +67,7 @@
         <Project Path="Chapter5/5-3-Parallax-Occlusion-Mapping/5-3-Parallax-Occlusion-Mapping.csproj" />
         <Project Path="Chapter5/6-HDR/6-HDR.csproj" />
         <Project Path="Chapter5/7-Bloom/7-Bloom.csproj" />
+        <Project Path="Chapter5/8-1-Deferred-Shading/8-1-Deferred-Shading.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />

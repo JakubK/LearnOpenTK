@@ -51,6 +51,10 @@ artifacts/
 *.ilk
 *.meta
 *.obj
+
+# But allow .obj files in Resources directory
+!**/Resources/**/*.obj
+
 *.pch
 *.pdb
 *.pgc
