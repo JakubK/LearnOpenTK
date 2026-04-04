@@ -9,6 +9,11 @@ namespace LearnOpenTK
 {
     public class Window : GameWindow
     {
+        private int[] pingpongFbo = new[] { 0, 0 };
+        private int[] pingpongColorbuffers = new[] { 0, 0 };
+        
+        private int[] colorBuffers = new []{ 0, 0 };
+        
         private int rboDepth;
         private int colorBuffer;
         
@@ -17,23 +22,27 @@ namespace LearnOpenTK
         
         private int hdrFbo;
         
-        private bool hdr = true;
-        private bool hdrKeyPressed = false;
+        private bool bloom = true;
+        private bool bloomKeyPressed;
         private float exposure = 1.0f;
         
         private float nearPlane = 1f;
         private float farPlane = 25f;
         
         private Texture woodTexture;
+        private Texture containerTexture;
         
         private Shader _shader;
-        private Shader _hdrShader;
+        private Shader _shaderLight;
+        private Shader _shaderBlur;
+        private Shader _shaderBloomFinal;
         
         private Camera _camera;
 
         private bool _firstMove = true;
 
         private Vector2 _lastPos;
+
 
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
@@ -51,55 +60,92 @@ namespace LearnOpenTK
 
             // load texture
             woodTexture = Texture.LoadFromFile("Resources/wood.png", TextureWrapMode.Repeat, true);
+            containerTexture = Texture.LoadFromFile("Resources/container2.png", TextureWrapMode.Repeat, true);
             
-            
-            // Configure floating point framebuffer
             hdrFbo = GL.GenFramebuffer();
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, hdrFbo);
+            GL.GenTextures(colorBuffers.Length, colorBuffers);
             
-            // Create floating point color buffer
-            colorBuffer = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, colorBuffer);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, 800, 600, 0, PixelFormat.Rgba, PixelType.Float, 0);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);            
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);            
+            // Create 2 floating point buffers (1 for normal rendering, other for brightness threshold values)
+            for (int i = 0; i < colorBuffers.Length; i++)
+            {
+                // attach texture to framebuffer
+                GL.BindTexture(TextureTarget.Texture2D, colorBuffers[i]);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, 800, 600, 0, PixelFormat.Rgba, PixelType.Float, 0);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge); // we clamp to the edge as the blur filter would otherwise sample repeated texture values!
+                
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0 + i, TextureTarget.Texture2D, colorBuffers[i], 0);
+            }
             
-            // Create depth buffer (render buffer)
+            // create and attach depth buffer (renderbuffer)
             rboDepth = GL.GenRenderbuffer();
             GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, rboDepth);
             GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.DepthComponent, 800, 600);
-
-            // Attach buffers
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, hdrFbo);
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, colorBuffer, 0);
             GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, RenderbufferTarget.Renderbuffer, rboDepth);
+
+            // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
+            DrawBuffersEnum[] attachments = { DrawBuffersEnum.ColorAttachment0, DrawBuffersEnum.ColorAttachment1 };
+            GL.DrawBuffers(attachments.Length, attachments);
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
             {
                 Console.WriteLine("Framebuffer not complete!");
             }
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             
+            GL.GenFramebuffers(2, pingpongFbo);
+            GL.GenTextures(2, pingpongColorbuffers);
+
+            for (int i = 0; i < pingpongColorbuffers.Length; i++)
+            {
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, pingpongFbo[i]);
+                GL.BindTexture(TextureTarget.Texture2D, pingpongColorbuffers[i]);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, 800, 600, 0, PixelFormat.Rgba, PixelType.Float, 0);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,  (int)TextureWrapMode.ClampToEdge);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,  (int)TextureWrapMode.ClampToEdge);
+                
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, pingpongColorbuffers[i], 0);
+                
+                // also check if framebuffers are complete (no need for depth buffer)
+                if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
+                {
+                    Console.WriteLine("Framebuffer not complete!");
+                }
+            }
+            
+            
             // Lighting info
             LightPositions = new List<Vector3>();
-            LightPositions.Add(new  Vector3(0, 0, 49.5f)); // back light
-            LightPositions.Add(new  Vector3(-1.4f, -1.9f, 9f));
-            LightPositions.Add(new  Vector3(0, -1.8f, 4f));
-            LightPositions.Add(new  Vector3(0.8f, -1.7f, 6f));
+            LightPositions.Add(new  Vector3(0, 0.5f, 1.5f));
+            LightPositions.Add(new  Vector3(-4f, 0.5f, -3f));
+            LightPositions.Add(new  Vector3(3f, 0.5f, 4f));
+            LightPositions.Add(new  Vector3(-0.8f, 2.4f, -1f));
 
             LightColors = new List<Vector3>();
-            LightColors.Add(new  Vector3(200, 200, 200));
-            LightColors.Add(new  Vector3(0.1f, 0, 0));
-            LightColors.Add(new  Vector3(0, 0, 0.2f));
-            LightColors.Add(new  Vector3(0, 0.1f, 0));
+            LightColors.Add(new  Vector3(5, 5, 5));
+            LightColors.Add(new  Vector3(10, 0, 0));
+            LightColors.Add(new  Vector3(0, 0, 15f));
+            LightColors.Add(new  Vector3(0, 5f, 0));
             
             // shader configuration
-            _shader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
-            _hdrShader = new Shader("Shaders/hdr.vert", "Shaders/hdr.frag");
+            _shader = new Shader("Shaders/bloom.vert", "Shaders/bloom.frag");
+            _shaderLight = new Shader("Shaders/bloom.vert", "Shaders/light_box.frag");
+            _shaderBlur = new Shader("Shaders/blur.vert", "Shaders/blur.frag");
+            _shaderBloomFinal = new Shader("Shaders/bloom_final.vert", "Shaders/bloom_final.frag");
             
             _shader.Use();
             _shader.SetInt("diffuseTexture", 0);
             
-            _hdrShader.Use();
-            _hdrShader.SetInt("hdrBuffer", 0);
+            _shaderBlur.Use();
+            _shaderBlur.SetInt("image", 0);
+            
+            _shaderBloomFinal.Use();
+            _shaderBloomFinal.SetInt("scene", 0);
+            _shaderBloomFinal.SetInt("bloomBlur", 1);
             
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
 
@@ -112,7 +158,6 @@ namespace LearnOpenTK
             
             GL.ClearColor(0.1f,0.1f,0.1f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            
             
             // 1. render scene into floating point framebuffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, hdrFbo);
@@ -130,24 +175,101 @@ namespace LearnOpenTK
                 _shader.SetVector3($"lights[{i}].Color", LightColors[i]);
             }
             
-            // render tunnel
+            // create one large cube that acts as the floor
             var model = Matrix4.Identity;
-            model = Matrix4.CreateTranslation(new  Vector3(0,0,25)) * model;
-            model = Matrix4.CreateScale(new Vector3(2.5f, 2.5f, 27.5f)) * model;
-            
+            model = Matrix4.CreateTranslation(new  Vector3(0, -1.0f, 0)) * model;
+            model = Matrix4.CreateScale(new Vector3(12.5f, 0.5f, 12.5f)) * model;
             _shader.SetMatrix4("model", model);
-            _shader.SetBool("inverse_normals", true);
             RenderCube();
+            
+            // then create multiple cubes as the scenery
+            GL.BindTexture(TextureTarget.Texture2D, containerTexture.Handle);
+            
+            model = Matrix4.Identity;
+            model = Matrix4.CreateTranslation(new  Vector3(0, 1.5f, 0)) * model;
+            model =  Matrix4.CreateScale(new Vector3(0.5f)) * model;
+            _shader.SetMatrix4("model", model);
+            RenderCube();
+            
+            model = Matrix4.Identity;
+            model = Matrix4.CreateTranslation(new  Vector3(2, 0, 1)) * model;
+            model =  Matrix4.CreateScale(new Vector3(0.5f)) * model;
+            _shader.SetMatrix4("model", model);
+            RenderCube();
+
+            model = Matrix4.Identity;
+            model = Matrix4.CreateTranslation(new  Vector3(-1, -1, 2)) * model;
+            model = Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 1), MathHelper.DegreesToRadians(60f)) * model;
+            _shader.SetMatrix4("model", model);
+            RenderCube();
+            
+            model = Matrix4.Identity;
+            model = Matrix4.CreateTranslation(new  Vector3(0, 2.7f, 4)) * model;
+            model = Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 1), MathHelper.DegreesToRadians(23)) * model;
+            model =  Matrix4.CreateScale(new Vector3(1.25f)) * model;
+            _shader.SetMatrix4("model", model);
+            RenderCube();
+
+            model = Matrix4.Identity;
+            model = Matrix4.CreateTranslation(new  Vector3(-2, 1, -3)) * model;
+            model = Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 1), MathHelper.DegreesToRadians(124f)) * model;
+            _shader.SetMatrix4("model", model);
+            RenderCube();
+
+            model = Matrix4.Identity;
+            model = Matrix4.CreateTranslation(new  Vector3(-3, 0, 0)) * model;
+            model =  Matrix4.CreateScale(new Vector3(0.5f)) * model;
+            _shader.SetMatrix4("model", model);
+            RenderCube();
+            
+            // finally show all the light sources as bright cubes
+            _shaderLight.Use();
+            _shaderLight.SetMatrix4("projection", _camera.GetProjectionMatrix());
+            _shaderLight.SetMatrix4("view", _camera.GetViewMatrix());
+
+            for (int i = 0; i < LightPositions.Count; i++)
+            {
+                model = Matrix4.Identity;
+                model = Matrix4.CreateTranslation(LightPositions[i]) * model;
+                model =  Matrix4.CreateScale(new Vector3(0.25f)) * model;
+                
+                _shaderLight.SetMatrix4("model", model);
+                _shaderLight.SetVector3("lightColor", LightColors[i]);
+                RenderCube();
+            }
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+            var horizontal = 1;
+            var firstIteration = true;
+            var amount = 10;
+            _shaderBlur.Use();
+
+            for (int i = 0; i < amount; i++)
+            {
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, pingpongFbo[horizontal]);
+                _shaderBlur.SetInt("horizontal", horizontal);
+                
+                GL.BindTexture(TextureTarget.Texture2D, firstIteration ? colorBuffers[1] : pingpongColorbuffers[1 - horizontal]); // bind texture of other framebuffer (or scene if first iteration)
+                RenderQuad();
+                horizontal = 1 - horizontal;
+                if (firstIteration)
+                {
+                    firstIteration = false;
+                }
+            }
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             
-            // 2. Now render floating point color buffer to 2D quad and tonemap HDR colors to default framebuffer's clamped color range
+            // 3. now render floating point color buffer to 2D quad and tonemap HDR colors to default framebuffer's (clamped) color range
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            _hdrShader.Use();
+            _shaderBloomFinal.Use();
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, colorBuffer);
-            _hdrShader.SetBool("hdr", hdr);            
-            _hdrShader.SetFloat("exposure", exposure);
+            GL.BindTexture(TextureTarget.Texture2D, colorBuffers[0]);
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, pingpongColorbuffers[1 - horizontal]);
+            _shaderBloomFinal.SetBool("bloom", bloom);
+            _shaderBloomFinal.SetFloat("exposure", exposure);
             RenderQuad();
+            
             
             SwapBuffers();
         }
@@ -289,13 +411,13 @@ namespace LearnOpenTK
 
             if (input.IsKeyDown(Keys.B))
             {
-                hdr = !hdr;
-                hdrKeyPressed = true;
+                bloom = !bloom;
+                bloomKeyPressed = true;
             }
 
             if (input.IsKeyReleased(Keys.B))
             {
-                hdrKeyPressed = false;
+                bloomKeyPressed = false;
             }
             
             if (input.IsKeyDown(Keys.Q)) 
