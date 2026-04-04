@@ -68,6 +68,7 @@
         <Project Path="Chapter5/6-HDR/6-HDR.csproj" />
         <Project Path="Chapter5/7-Bloom/7-Bloom.csproj" />
         <Project Path="Chapter5/8-1-Deferred-Shading/8-1-Deferred-Shading.csproj" />
+        <Project Path="Chapter5/8-2-Deferred-Shading-Volumes/8-2-Deferred-Shading-Volumes.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
