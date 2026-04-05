@@ -146,13 +146,13 @@ namespace LearnOpenTK
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, gBuffer);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            var projections = _camera.GetProjectionMatrix();
-            var views = _camera.GetViewMatrix();
+            var projection = _camera.GetProjectionMatrix();
+            var view = _camera.GetViewMatrix();
             var model = Matrix4.Identity;
 
             shaderGeometryPass.Use();
-            shaderGeometryPass.SetMatrix4("projection", projections);
-            shaderGeometryPass.SetMatrix4("view", views);
+            shaderGeometryPass.SetMatrix4("projection", projection);
+            shaderGeometryPass.SetMatrix4("view", view);
             for (int i = 0; i < ObjectPositions.Count; i++)
             {
                 model = Matrix4.Identity;
