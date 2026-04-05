@@ -92,8 +92,8 @@ namespace LearnOpenTK
             LightColors.Add(new  Vector3(0, 0.1f, 0));
             
             // shader configuration
-            _shader = new Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
-            _hdrShader = new Shader("Shaders/hdr.vert", "Shaders/hdr.frag");
+            _shader = new Shader("Shaders/lighting.vs", "Shaders/lighting.fs");
+            _hdrShader = new Shader("Shaders/hdr.vs", "Shaders/hdr.fs");
             
             _shader.Use();
             _shader.SetInt("diffuseTexture", 0);

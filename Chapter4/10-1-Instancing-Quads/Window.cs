@@ -57,7 +57,7 @@ namespace LearnOpenTK
             }
             
             // Shader
-            shader = new Shader("Shaders/instancing.vert",  "Shaders/instancing.frag");
+            shader = new Shader("Shaders/instancing.vs",  "Shaders/instancing.fs");
             
             
             // Instances

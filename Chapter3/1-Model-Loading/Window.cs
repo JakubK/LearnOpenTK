@@ -34,7 +34,7 @@ namespace LearnOpenTK
             GL.Enable(EnableCap.DepthTest);
 
 
-            _modelShader = new Shader("Shaders/model.vert", "Shaders/model.frag");
+            _modelShader = new Shader("Shaders/model.vs", "Shaders/model.fs");
             
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
             _model = new Model("Resources/backpack.obj");

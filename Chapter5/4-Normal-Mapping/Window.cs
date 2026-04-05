@@ -50,7 +50,7 @@ namespace LearnOpenTK
             normalMap = Texture.LoadFromFile("Resources/brickwall_normal.jpg");
             
             // shader configuration
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             
             _shader.Use();
             _shader.SetInt("diffuseMap", 0);

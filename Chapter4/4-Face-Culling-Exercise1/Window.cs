@@ -112,7 +112,7 @@ namespace LearnOpenTK
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
 
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             _shader.Use();
 
             var vertexLocation = _shader.GetAttribLocation("aPosition");

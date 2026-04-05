@@ -48,7 +48,7 @@ namespace LearnOpenTK
             depthMap = Texture.LoadFromFile("Resources/bricks2_disp.jpg");
             
             // shader configuration
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             
             _shader.Use();
             _shader.SetInt("diffuseMap", 0);

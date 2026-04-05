@@ -67,8 +67,8 @@ namespace LearnOpenTK
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
-            // shader.vert has been modified, take a look at it as well.
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            // shader.vs has been modified, take a look at it as well.
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             _shader.Use();
 
             var vertexLocation = _shader.GetAttribLocation("aPosition");
@@ -128,7 +128,7 @@ namespace LearnOpenTK
             _shader.Use();
 
             // Now that the matrix is finished, pass it to the vertex shader.
-            // Go over to shader.vert to see how we finally apply this to the vertices.
+            // Go over to shader.vs to see how we finally apply this to the vertices.
             _shader.SetMatrix4("transform", transform);
 
             // And that's it for now! In the next tutorial, we'll see how to setup a full coordinates system.

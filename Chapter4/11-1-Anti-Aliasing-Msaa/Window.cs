@@ -84,7 +84,7 @@ namespace LearnOpenTK
             GL.Enable(EnableCap.Multisample);
             
             // Shader
-            shader = new Shader("Shaders/antialiasing.vert",  "Shaders/antialiasing.frag");
+            shader = new Shader("Shaders/antialiasing.vs",  "Shaders/antialiasing.fs");
 
             cubeVao = GL.GenVertexArray();
             cubeVbo = GL.GenBuffer();

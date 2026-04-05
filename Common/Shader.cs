@@ -16,7 +16,7 @@ namespace LearnOpenTK.Common
         // This is how you create a simple shader.
         // Shaders are written in GLSL, which is a language very similar to C in its semantics.
         // The GLSL source is compiled *at runtime*, so it can optimize itself for the graphics card it's currently being used on.
-        // A commented example of GLSL can be found in shader.vert.
+        // A commented example of GLSL can be found in shader.vs.
         public Shader(string vertPath, string fragPath, string? geometryPath = null)
         {
             // There are several different types of shaders, but the only two you need for basic rendering are the vertex and fragment shaders.

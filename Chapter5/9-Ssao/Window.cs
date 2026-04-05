@@ -184,10 +184,10 @@ namespace LearnOpenTK
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
             // load shaders
-            shaderGeometryPass = new Shader("Shaders/ssao_geometry.vert", "Shaders/ssao_geometry.frag");
-            shaderLightingPass = new Shader("Shaders/ssao.vert", "Shaders/ssao_lighting.frag");
-            shaderSsao = new Shader("Shaders/ssao.vert", "Shaders/ssao.frag");
-            shaderSsaoBlur = new Shader("Shaders/ssao.vert", "Shaders/ssao_blur.frag");
+            shaderGeometryPass = new Shader("Shaders/ssao_geometry.vs", "Shaders/ssao_geometry.fs");
+            shaderLightingPass = new Shader("Shaders/ssao.vs", "Shaders/ssao_lighting.fs");
+            shaderSsao = new Shader("Shaders/ssao.vs", "Shaders/ssao.fs");
+            shaderSsaoBlur = new Shader("Shaders/ssao.vs", "Shaders/ssao_blur.fs");
             
             shaderLightingPass.Use();
             shaderLightingPass.SetInt("gPosition", 0);

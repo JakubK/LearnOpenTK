@@ -99,10 +99,10 @@ namespace LearnOpenTK
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
             
             // Shaders
-            blueShader = new Shader("Shaders/shader.vert",  "Shaders/blue.frag");
-            greenShader = new Shader("Shaders/shader.vert",  "Shaders/green.frag");
-            redShader = new Shader("Shaders/shader.vert",  "Shaders/red.frag");
-            yellowShader = new Shader("Shaders/shader.vert",  "Shaders/yellow.frag");
+            blueShader = new Shader("Shaders/shader.vs",  "Shaders/blue.fs");
+            greenShader = new Shader("Shaders/shader.vs",  "Shaders/green.fs");
+            redShader = new Shader("Shaders/shader.vs",  "Shaders/red.fs");
+            yellowShader = new Shader("Shaders/shader.vs",  "Shaders/yellow.fs");
             
             // Uniform Buffer Object
             // Get relevant block indices

@@ -155,8 +155,8 @@ namespace LearnOpenTK
             cubeTexture = Texture.LoadFromFile("Resources/container.png");
             floorTexture = Texture.LoadFromFile("Resources/metal.png");
             
-            _shader = new Shader("Shaders/framebuffers.vert", "Shaders/framebuffers.frag");
-            _screenShader = new Shader("Shaders/framebuffers_screen.vert", "Shaders/framebuffers_screen.frag");
+            _shader = new Shader("Shaders/framebuffers.vs", "Shaders/framebuffers.fs");
+            _screenShader = new Shader("Shaders/framebuffers_screen.vs", "Shaders/framebuffers_screen.fs");
             
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
 

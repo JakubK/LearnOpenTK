@@ -71,7 +71,7 @@ namespace LearnOpenTK
 
             floorTexture = Texture.LoadFromFile("Resources/wood.png", TextureWrapMode.ClampToEdge);
             
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             _shader.Use();
             _shader.SetInt("floorTexture", 0);
             

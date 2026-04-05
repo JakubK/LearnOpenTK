@@ -9,13 +9,13 @@
 
     <ItemGroup>
         <None Include="Shaders/**" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="Shaders\shader.frag">
+        <None Update="Shaders\shader.fs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Shaders\shader.vert">
+        <None Update="Shaders\shader.vs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Shaders\single_color.frag">
+        <None Update="Shaders\single_color.fs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Resources\metal.png">

@@ -18,22 +18,22 @@
     <ItemGroup>
         <None Include="Shaders/**" CopyToOutputDirectory="PreserveNewest" />
         <None Include="Resources/**" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="Shaders\shader.vert">
+        <None Update="Shaders\shader.vs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Shaders\shader.frag">
+        <None Update="Shaders\shader.fs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Shaders\depth.vert">
+        <None Update="Shaders\depth.vs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Shaders\depth.frag">
+        <None Update="Shaders\depth.fs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Shaders\debug.vert">
+        <None Update="Shaders\debug.vs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Shaders\debug.frag">
+        <None Update="Shaders\debug.fs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>

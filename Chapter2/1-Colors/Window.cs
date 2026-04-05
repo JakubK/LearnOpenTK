@@ -106,9 +106,9 @@ namespace LearnOpenTK
 
             // Load the two different shaders, they use the same vertex shader program. However they have two different fragment shaders.
             // This is because the lamp only uses a basic shader to turn it white, it wouldn't make sense to have the lamp lit in other colors.
-            // The lighting shaders uses the lighting.frag shader which is what a large part of this chapter will be about
-            _lightingShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag");
-            _lampShader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            // The lighting shaders uses the lighting.fs shader which is what a large part of this chapter will be about
+            _lightingShader = new Shader("Shaders/shader.vs", "Shaders/lighting.fs");
+            _lampShader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
 
             {
                 // Initialize the vao for the model

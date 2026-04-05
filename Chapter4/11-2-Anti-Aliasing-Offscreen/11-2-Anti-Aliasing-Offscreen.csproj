@@ -13,10 +13,10 @@
 
     <ItemGroup>
         <None Include="Shaders/**" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="Shaders\antialiasing.frag">
+        <None Update="Shaders\antialiasing.fs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Shaders\antialiasing.vert">
+        <None Update="Shaders\antialiasing.vs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>

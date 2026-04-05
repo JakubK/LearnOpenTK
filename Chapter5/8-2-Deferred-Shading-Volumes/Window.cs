@@ -121,9 +121,9 @@ namespace LearnOpenTK
             }
             
             // load shaders
-            shaderGeometryPass = new Shader("Shaders/g_buffer.vert", "Shaders/g_buffer.frag");
-            shaderLightingPass = new Shader("Shaders/deferred_shading.vert", "Shaders/deferred_shading.frag");
-            shaderLightBox = new Shader("Shaders/deferred_light_box.vert", "Shaders/deferred_light_box.frag");
+            shaderGeometryPass = new Shader("Shaders/g_buffer.vs", "Shaders/g_buffer.fs");
+            shaderLightingPass = new Shader("Shaders/deferred_shading.vs", "Shaders/deferred_shading.fs");
+            shaderLightBox = new Shader("Shaders/deferred_light_box.vs", "Shaders/deferred_light_box.fs");
             
             shaderLightingPass.Use();
             shaderLightingPass.SetInt("gPosition", 0);
@@ -204,8 +204,8 @@ namespace LearnOpenTK
 
             // 3. render lights on top of scene
             shaderLightBox.Use();
-            shaderLightBox.SetMatrix4("projection", projections);
-            shaderLightBox.SetMatrix4("view", views);
+            shaderLightBox.SetMatrix4("projection", projection);
+            shaderLightBox.SetMatrix4("view", view);
             for (int i = 0; i < LightPositions.Count; i++)
             {
                 model = Matrix4.Identity;

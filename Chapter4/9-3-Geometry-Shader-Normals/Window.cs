@@ -95,8 +95,8 @@ namespace LearnOpenTK
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
             
             // Shader
-            shader = new Shader("Shaders/default.vert",  "Shaders/default.frag");
-            normalShader = new Shader("Shaders/normal_visualization.vert",  "Shaders/normal_visualization.frag", "Shaders/normal_visualization.geo");
+            shader = new Shader("Shaders/default.vs",  "Shaders/default.fs");
+            normalShader = new Shader("Shaders/normal_visualization.vs",  "Shaders/normal_visualization.fs", "Shaders/normal_visualization.gs");
             
             backpack = new Model("Resources/backpack.obj");
             

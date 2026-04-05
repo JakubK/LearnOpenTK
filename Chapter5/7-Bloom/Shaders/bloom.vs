@@ -11,11 +11,15 @@ out VS_OUT {
 
 uniform mat4 projection;
 uniform mat4 view;
+uniform mat4 model;
 
 void main()
 {
-    vs_out.FragPos = aPos;
-    vs_out.Normal = aNormal;
+    vs_out.fsPos = vec3(model * vec4(aPos, 1.0));   
     vs_out.TexCoords = aTexCoords;
-    gl_Position = projection * view * vec4(aPos, 1.0);
+        
+    mat3 normalMatrix = transpose(inverse(mat3(model)));
+    vs_out.Normal = normalize(normalMatrix * aNormal);
+    
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
 }

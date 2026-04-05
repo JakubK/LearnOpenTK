@@ -95,8 +95,8 @@ namespace LearnOpenTK
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             
             // shader configuration
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
-            _debugShader = new Shader("Shaders/debug.vert", "Shaders/debug.frag");
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
+            _debugShader = new Shader("Shaders/debug.vs", "Shaders/debug.fs");
             
             
             _debugShader.Use();

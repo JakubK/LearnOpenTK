@@ -96,9 +96,9 @@ namespace LearnOpenTK
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             
             // shader configuration
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
-            _depthShader = new Shader("Shaders/depth.vert", "Shaders/depth.frag");
-            _debugShader = new Shader("Shaders/debug.vert", "Shaders/debug.frag");
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
+            _depthShader = new Shader("Shaders/depth.vs", "Shaders/depth.fs");
+            _debugShader = new Shader("Shaders/debug.vs", "Shaders/debug.fs");
             
             _shader.Use();
             _shader.SetInt("diffuseTexture", 0);

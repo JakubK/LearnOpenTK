@@ -42,8 +42,8 @@ namespace LearnOpenTK
             GL.Enable(EnableCap.DepthTest);
             
             // Shader
-            asteroidsShader = new Shader("Shaders/asteroids.vert",  "Shaders/asteroids.frag");
-            planetShader = new Shader("Shaders/planet.vert",  "Shaders/planet.frag");
+            asteroidsShader = new Shader("Shaders/asteroids.vs",  "Shaders/asteroids.fs");
+            planetShader = new Shader("Shaders/planet.vs",  "Shaders/planet.fs");
 
             planet = new Model("Resources/planet/planet.obj");
             rock = new Model("Resources/rock/rock.obj");

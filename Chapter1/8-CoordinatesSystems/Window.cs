@@ -77,8 +77,8 @@ namespace LearnOpenTK
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
-            // shader.vert has been modified. Take a look at it after the explanation in OnRenderFrame.
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            // shader.vs has been modified. Take a look at it after the explanation in OnRenderFrame.
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             _shader.Use();
 
             var vertexLocation = _shader.GetAttribLocation("aPosition");

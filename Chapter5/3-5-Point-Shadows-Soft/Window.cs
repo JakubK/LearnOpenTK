@@ -103,8 +103,8 @@ namespace LearnOpenTK
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             
             // shader configuration
-            _shader = new Shader("Shaders/point_shadows.vert", "Shaders/point_shadows.frag");
-            _depthShader = new Shader("Shaders/point_shadows_depth.vert", "Shaders/point_shadows_depth.frag", "Shaders/point_shadows_depth.geo");
+            _shader = new Shader("Shaders/point_shadows.vs", "Shaders/point_shadows.fs");
+            _depthShader = new Shader("Shaders/point_shadows_depth.vs", "Shaders/point_shadows_depth.fs", "Shaders/point_shadows_depth.gs");
             
             _shader.Use();
             _shader.SetInt("diffuseTexture", 0);

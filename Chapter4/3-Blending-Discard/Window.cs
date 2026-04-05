@@ -167,7 +167,7 @@ namespace LearnOpenTK
             floorTexture = Texture.LoadFromFile("Resources/metal.png");
             transparentTexture = Texture.LoadFromFile("Resources/grass.png", TextureWrapMode.ClampToEdge);
             
-            _modelShader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            _modelShader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
 

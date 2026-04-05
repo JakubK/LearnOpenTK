@@ -132,10 +132,10 @@ namespace LearnOpenTK
             LightColors.Add(new  Vector3(0, 5f, 0));
             
             // shader configuration
-            _shader = new Shader("Shaders/bloom.vert", "Shaders/bloom.frag");
-            _shaderLight = new Shader("Shaders/bloom.vert", "Shaders/light_box.frag");
-            _shaderBlur = new Shader("Shaders/blur.vert", "Shaders/blur.frag");
-            _shaderBloomFinal = new Shader("Shaders/bloom_final.vert", "Shaders/bloom_final.frag");
+            _shader = new Shader("Shaders/bloom.vs", "Shaders/bloom.fs");
+            _shaderLight = new Shader("Shaders/bloom.vs", "Shaders/light_box.fs");
+            _shaderBlur = new Shader("Shaders/blur.vs", "Shaders/blur.fs");
+            _shaderBloomFinal = new Shader("Shaders/bloom_final.vs", "Shaders/bloom_final.fs");
             
             _shader.Use();
             _shader.SetInt("diffuseTexture", 0);

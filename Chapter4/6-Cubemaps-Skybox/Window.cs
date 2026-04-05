@@ -162,8 +162,8 @@ namespace LearnOpenTK
             
             cubeTexture = Texture.LoadFromFile("Resources/container.png");
             
-            _skyboxShader = new Shader("Shaders/skybox.vert", "Shaders/skybox.frag");
-            _cubemapShader = new Shader("Shaders/cubemap.vert", "Shaders/cubemap.frag");
+            _skyboxShader = new Shader("Shaders/skybox.vs", "Shaders/skybox.fs");
+            _cubemapShader = new Shader("Shaders/cubemap.vs", "Shaders/cubemap.fs");
             
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
 

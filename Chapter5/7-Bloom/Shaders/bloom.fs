@@ -28,11 +28,11 @@ void main()
     for(int i = 0; i < 4; i++)
     {
         // diffuse
-        vec3 lightDir = normalize(lights[i].Position - fs_in.FragPos);
+        vec3 lightDir = normalize(lights[i].Position - fs_in.fsPos);
         float diff = max(dot(lightDir, normal), 0.0);
         vec3 result = lights[i].Color * diff * color;      
         // attenuation (use quadratic as we have gamma correction)
-        float distance = length(fs_in.FragPos - lights[i].Position);
+        float distance = length(fs_in.fsPos - lights[i].Position);
         result *= 1.0 / (distance * distance);
         lighting += result;
                 

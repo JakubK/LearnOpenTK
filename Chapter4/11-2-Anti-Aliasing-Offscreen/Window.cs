@@ -101,8 +101,8 @@ namespace LearnOpenTK
             GL.Enable(EnableCap.DepthTest);
             
             // Shader
-            shader = new Shader("Shaders/antialiasing.vert",  "Shaders/antialiasing.frag");
-            screenShader = new Shader("Shaders/aa_post.vert",  "Shaders/aa_post.frag");
+            shader = new Shader("Shaders/antialiasing.vs",  "Shaders/antialiasing.fs");
+            screenShader = new Shader("Shaders/aa_post.vs",  "Shaders/aa_post.fs");
 
             // Cube
             cubeVao = GL.GenVertexArray();

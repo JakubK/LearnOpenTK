@@ -122,7 +122,7 @@ namespace LearnOpenTK
             GL.VertexAttribPointer(1, 2,  VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
             GL.BindVertexArray(0);
             
-            _modelShader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            _modelShader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
 

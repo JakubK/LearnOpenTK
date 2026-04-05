@@ -93,7 +93,7 @@ namespace LearnOpenTK
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
             
             // Shader
-            shader = new Shader("Shaders/shader.vert",  "Shaders/shader.frag", "Shaders/shader.geo");
+            shader = new Shader("Shaders/shader.vs",  "Shaders/shader.fs", "Shaders/shader.gs");
             
             nanosuit = new Model("Resources/nanosuit/nanosuit.obj");
             

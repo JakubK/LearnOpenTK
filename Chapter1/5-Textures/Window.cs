@@ -60,7 +60,7 @@ namespace LearnOpenTK
             GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
             // The shaders have been modified to include the texture coordinates, check them out after finishing the OnLoad function.
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             _shader.Use();
 
             // Because there's now 5 floats between the start of the first vertex and the start of the second,

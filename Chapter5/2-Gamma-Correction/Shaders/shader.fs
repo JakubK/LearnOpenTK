@@ -43,7 +43,7 @@ void main()
     vec3 color = texture(floorTexture, fs_in.TexCoords).rgb;
     vec3 lighting = vec3(0.0);
     for(int i = 0; i < 4; ++i)
-        lighting += BlinnPhong(normalize(fs_in.Normal), fs_in.FragPos, lightPositions[i], lightColors[i]);
+        lighting += BlinnPhong(normalize(fs_in.Normal), fs_in.fsPos, lightPositions[i], lightColors[i]);
     color *= lighting;
     if(gamma)
         color = pow(color, vec3(1.0/2.2));

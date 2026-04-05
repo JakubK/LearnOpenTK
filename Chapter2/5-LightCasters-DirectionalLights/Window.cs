@@ -113,8 +113,8 @@ namespace LearnOpenTK
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
-            _lightingShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag");
-            _lampShader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            _lightingShader = new Shader("Shaders/shader.vs", "Shaders/lighting.fs");
+            _lampShader = new Shader("Shaders/shader.vs", "Shaders/shader.fs");
             
             {
                 _vaoModel = GL.GenVertexArray();

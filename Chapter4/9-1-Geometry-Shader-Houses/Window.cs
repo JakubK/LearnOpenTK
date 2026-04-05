@@ -50,7 +50,7 @@ namespace LearnOpenTK
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 2 * sizeof(float));
             GL.EnableVertexAttribArray(1);
             
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag", "Shaders/shader.geo");
+            _shader = new Shader("Shaders/shader.vs", "Shaders/shader.fs", "Shaders/shader.gs");
             _shader.Use();
         }
 
