@@ -213,6 +213,22 @@ namespace LearnOpenTK.Common
             GL.UseProgram(Handle);
             GL.UniformMatrix4(_uniformLocations[name], false, ref data);
         }
+        
+        /// <summary>
+        /// Set a uniform Matrix3 on this shader
+        /// </summary>
+        /// <param name="name">The name of the uniform</param>
+        /// <param name="data">The data to set</param>
+        /// <remarks>
+        ///   <para>
+        ///   The matrix is transposed before being sent to the shader.
+        ///   </para>
+        /// </remarks>
+        public void SetMatrix3(string name, Matrix3 data)
+        {
+            GL.UseProgram(Handle);
+            GL.UniformMatrix3(_uniformLocations[name], false, ref data);
+        }
 
         /// <summary>
         /// Set a uniform Vector3 on this shader.

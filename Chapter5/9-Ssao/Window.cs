@@ -158,12 +158,12 @@ namespace LearnOpenTK
                 );
                 sample = Vector3.Normalize(sample);
                 sample *= (float)(new Random().NextDouble());
-                var scale = (float)i / 64.0f;
+                var scale = i / 64.0f;
                 scale = MathHelper.Lerp(0.1f, 1.0f, scale * scale);
                 sample *= scale;
                 ssaoKernel.Add(sample);
             }
-
+            
             // generate noise texture
             noiseTexture = GL.GenTexture();
             for (int i = 0;i < 16; i++)

@@ -71,6 +71,9 @@
         <Project Path="Chapter5/8-2-Deferred-Shading-Volumes/8-2-Deferred-Shading-Volumes.csproj" />
         <Project Path="Chapter5/9-Ssao/9-Ssao.csproj" />
     </Folder>
+    <Folder Name="/Chapter6/">
+        <Project Path="Chapter6/1-1-Lighting/1-1-Lighting.csproj" />
+    </Folder>
 
   <Project Path="Common/Common.csproj" />
 </Solution>
