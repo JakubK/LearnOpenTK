@@ -12,8 +12,6 @@ namespace LearnOpenTK
         private int rboDepth;
 
         private List<Vector3> ObjectPositions = new();
-        private List<Vector3> LightPositions = new();
-        private List<Vector3> LightColors = new();
 
         private List<Vector3> ssaoKernel = new();
         private List<Vector3> ssaoNoice = new();

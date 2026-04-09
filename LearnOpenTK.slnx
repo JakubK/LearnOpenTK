@@ -73,6 +73,7 @@
     </Folder>
     <Folder Name="/Chapter6/">
         <Project Path="Chapter6/1-1-Lighting/1-1-Lighting.csproj" />
+        <Project Path="Chapter6/1-2-Lighting-Textured/1-2-Lighting-Textured.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
