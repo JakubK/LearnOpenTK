@@ -204,6 +204,7 @@ namespace LearnOpenTK
                 Matrix3.Transpose(new Matrix3(model.Inverted()), out var normalMatrix);
                 pbrShader.SetMatrix3("normalMatrix", normalMatrix);
                 
+                RenderSphere();
             }
             
             // render skybox (render as last to prevent overdraw)
