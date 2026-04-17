@@ -2,153 +2,6 @@ using System.Runtime.InteropServices;
 
 namespace LearnOpenTK;
 
-[StructLayout(LayoutKind.Sequential)]
-public struct FT_BBox
-{
-    public IntPtr xMin, yMin;
-    public IntPtr xMax, yMax;
-}
-
-public struct FT_Generic
-{
-    public IntPtr data;
-    public IntPtr finalizer;
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct GlyphMetricsRec
-{
-    internal IntPtr width;
-    internal IntPtr height;
-
-    internal IntPtr horiBearingX;
-    internal IntPtr horiBearingY;
-    internal IntPtr horiAdvance;
-
-    internal IntPtr vertBearingX;
-    internal IntPtr vertBearingY;
-    internal IntPtr vertAdvance;
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct FTVector26Dot6
-{
-    internal IntPtr x;
-    internal IntPtr y;
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct BitmapRec
-{
-    internal int rows;
-    internal int width;
-    internal int pitch;
-    internal IntPtr buffer;
-    internal short num_grays;
-    internal PixelMode pixel_mode;
-    internal byte palette_mode;
-    internal IntPtr palette;
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct OutlineRec
-{
-    internal short n_contours;
-    internal short n_points;
-
-    internal IntPtr points;
-    internal IntPtr tags;
-    internal IntPtr contours;
-
-    internal OutlineFlags flags;
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct GlyphSlotRec
-{
-    internal IntPtr library;
-    internal IntPtr face;
-    internal IntPtr next;
-    internal uint reserved;
-    internal FT_Generic generic;
-
-    internal GlyphMetricsRec metrics;
-    internal IntPtr linearHoriAdvance;
-    internal IntPtr linearVertAdvance;
-    internal FTVector26Dot6 advance;
-
-    internal GlyphFormat format;
-
-    internal BitmapRec bitmap;
-    internal int bitmap_left;
-    internal int bitmap_top;
-
-    internal OutlineRec outline;
-
-    internal uint num_subglyphs;
-    internal IntPtr subglyphs;
-
-    internal IntPtr control_data;
-    internal IntPtr control_len;
-
-    internal IntPtr lsb_delta;
-    internal IntPtr rsb_delta;
-
-    internal IntPtr other;
-
-    private IntPtr @internal;
-}
-
-
-[StructLayout(LayoutKind.Sequential)]
-public struct FT_FaceRec
-{
-    public IntPtr num_faces;
-    public IntPtr face_index;
-    public IntPtr face_flags;
-    public IntPtr style_flags;
-    public IntPtr num_glyphs;
-
-    public string family_name;
-    public string style_name;
-
-    public int num_fixed_sizes;
-    public IntPtr available_sizes;
-
-    public int num_charmaps;
-    public IntPtr charmaps;
-
-    public FT_Generic generic;
-
-    public FT_BBox bbox;
-
-    public ushort units_per_EM;
-    public short ascender;
-    public short descender;
-    public short height;
-
-    public short max_advance_width;
-    public short max_advance_height;
-
-    public short underline_position;
-    public short underline_thickness;
-
-    public IntPtr glyph;
-    public IntPtr size;
-    public IntPtr charmap;
-
-    public IntPtr driver;
-    public IntPtr memory;
-    public IntPtr stream;
-
-    public IntPtr sizes_list;
-    public IntPtr autohint;
-
-    public IntPtr extensions;
-    public IntPtr @internal;
-}
-
-
 internal static class FT
 {
     private const string WindowsLib = "freetype.dll";
@@ -167,7 +20,6 @@ internal static class FT
         
         return FT_Init_FreeType_Linux(out library);
     }
-    
     
     [DllImport(WindowsLib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "FT_New_Face")]
     private static extern int FT_New_Face_Windows(
@@ -194,7 +46,6 @@ internal static class FT
         return FT_New_Face_Linux(library, filepath, faceIndex, out face);
     }
     
-    
     [DllImport(WindowsLib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "FT_Set_Pixel_Sizes")]
     private static extern int FT_Set_Pixel_Sizes_Windows(IntPtr face, int width, int height);
 
@@ -208,7 +59,6 @@ internal static class FT
         
         return FT_Set_Pixel_Sizes_Linux(face, width, height);
     }
-    
     
     [DllImport(WindowsLib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "FT_Load_Char")]
     private static extern int FT_Load_Char_Windows(IntPtr face, ulong charCode, int loadFlags);

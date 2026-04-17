@@ -85,7 +85,7 @@ namespace LearnOpenTK
                 GL.BindTexture(TextureTarget.Texture2D, texture);
                 
                 var faceRec = Marshal.PtrToStructure<FT_FaceRec>(face);
-                var glyph = Marshal.PtrToStructure<GlyphSlotRec>(faceRec.glyph);
+                var glyph = Marshal.PtrToStructure<FT_GlyphSlotRec>(faceRec.glyph);
                 var bitmap = glyph.bitmap;
                 
                 GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, (int)bitmap.width, (int)bitmap.rows, 0, PixelFormat.Red, PixelType.UnsignedByte, bitmap.buffer);
