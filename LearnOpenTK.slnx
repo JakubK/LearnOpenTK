@@ -79,6 +79,10 @@
         <Project Path="Chapter6/2-2-1-Ibl-Specular/2-2-1-Ibl-Specular.csproj" />
         <Project Path="Chapter6/2-2-2-Ibl-Specular-Textured/2-2-2-Ibl-Specular-Textured.csproj" />
     </Folder>
+    <Folder Name="/Chapter7/">
+        <Project Path="Chapter7/1-Debugging/1-Debugging.csproj" />
+        <Project Path="Chapter7/2-Text-Rendering/2-Text-Rendering.csproj" />
+    </Folder>
 
   <Project Path="Common/Common.csproj" />
 </Solution>
