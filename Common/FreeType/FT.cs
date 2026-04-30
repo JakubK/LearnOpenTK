@@ -1,8 +1,9 @@
+using System;
 using System.Runtime.InteropServices;
 
-namespace LearnOpenTK;
+namespace LearnOpenTK.Common.FreeType;
 
-internal static class FT
+public static class FT
 {
     private const string WindowsLib = "freetype.dll";
     private const string LinuxLib = "libfreetype.so.6";

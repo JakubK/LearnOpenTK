@@ -144,9 +144,10 @@ namespace LearnOpenTK.Common
         }
 
         // A wrapper function that enables the shader program.
-        public void Use()
+        public Shader Use()
         {
             GL.UseProgram(Handle);
+            return this;
         }
 
         // The shader sources provided with this project use hardcoded layout(location)-s. If you want to do it dynamically,
@@ -239,6 +240,28 @@ namespace LearnOpenTK.Common
         {
             GL.UseProgram(Handle);
             GL.Uniform3(_uniformLocations[name], data);
+        }
+        
+        /// <summary>
+        /// Set a uniform Vector2 on this shader.
+        /// </summary>
+        /// <param name="name">The name of the uniform</param>
+        /// <param name="data">The data to set</param>
+        public void SetVector2(string name, Vector2 data)
+        {
+            GL.UseProgram(Handle);
+            GL.Uniform2(_uniformLocations[name], data);
+        }
+        
+        /// <summary>
+        /// Set a uniform Vector4 on this shader.
+        /// </summary>
+        /// <param name="name">The name of the uniform</param>
+        /// <param name="data">The data to set</param>
+        public void SetVector4(string name, Vector4 data)
+        {
+            GL.UseProgram(Handle);
+            GL.Uniform4(_uniformLocations[name], data);
         }
     }
 }

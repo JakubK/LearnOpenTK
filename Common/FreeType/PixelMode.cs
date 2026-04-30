@@ -1,4 +1,4 @@
-namespace LearnOpenTK;
+namespace LearnOpenTK.Common.FreeType;
 
 public enum PixelMode : byte
 {

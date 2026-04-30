@@ -82,6 +82,7 @@
     <Folder Name="/Chapter7/">
         <Project Path="Chapter7/1-Debugging/1-Debugging.csproj" />
         <Project Path="Chapter7/2-Text-Rendering/2-Text-Rendering.csproj" />
+        <Project Path="Chapter7/3-Full-Game/3-Full-Game.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />

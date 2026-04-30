@@ -20,7 +20,6 @@ namespace LearnOpenTK.Common
             GL.BindTexture(TextureTarget.Texture2D, handle);
 
             // For this example, we're going to use .NET's built-in System.Drawing library to load textures.
-
             var internalFormat = PixelInternalFormat.Rgba;
             
             if (gammaCorrected)

@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using LearnOpenTK.Common;
+using LearnOpenTK.Common.FreeType;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -65,7 +66,7 @@ namespace LearnOpenTK
             }
 
             // set size to load glyphs as
-            var setPixelSizeResult = FT.FT_Set_Pixel_Sizes(face, 0, 48);
+            FT.FT_Set_Pixel_Sizes(face, 0, 48);
             
             // disable byte-alignment restriction
             GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);

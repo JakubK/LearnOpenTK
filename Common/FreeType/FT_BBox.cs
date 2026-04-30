@@ -1,6 +1,7 @@
+using System;
 using System.Runtime.InteropServices;
 
-namespace LearnOpenTK;
+namespace LearnOpenTK.Common.FreeType;
 
 [StructLayout(LayoutKind.Sequential)]
 public struct FT_BBox

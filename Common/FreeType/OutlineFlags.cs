@@ -1,4 +1,6 @@
-namespace LearnOpenTK;
+using System;
+
+namespace LearnOpenTK.Common.FreeType;
 
 [Flags]
 public enum OutlineFlags

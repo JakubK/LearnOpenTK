@@ -1,9 +1,10 @@
+using System;
 using System.Runtime.InteropServices;
 
-namespace LearnOpenTK;
+namespace LearnOpenTK.Common.FreeType;
 
 [StructLayout(LayoutKind.Sequential)]
-internal struct FT_GlyphMetricsRec
+public struct FT_GlyphMetricsRec
 {
     internal IntPtr width;
     internal IntPtr height;

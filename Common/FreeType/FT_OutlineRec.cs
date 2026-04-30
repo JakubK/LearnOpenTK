@@ -1,9 +1,10 @@
+using System;
 using System.Runtime.InteropServices;
 
-namespace LearnOpenTK;
+namespace LearnOpenTK.Common.FreeType;
 
 [StructLayout(LayoutKind.Sequential)]
-internal struct FT_OutlineRec
+public struct FT_OutlineRec
 {
     internal short n_contours;
     internal short n_points;
