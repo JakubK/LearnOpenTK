@@ -1,4 +1,5 @@
 using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using KeyboardKeys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 
@@ -7,13 +8,11 @@ namespace LearnOpenTK;
 public class Game
 {
     public static readonly Vector2 PlayerSize = new (100, 20);
-    public static float PlayerVelocity = 500f;
+    public static float PlayerVelocity = 100000f;
     public static readonly Vector2 InitialBallVelocity = new (100f, -350f);
     public static float BallRadius = 12.5f;
 
     public GameState State;
-    public bool[] Keys = new bool[1024];
-    public bool[] KeysProcessed = new bool[1024];
     public int Width;
     public int Height;
 
@@ -37,6 +36,7 @@ public class Game
     {
         Width = width;
         Height = height;
+        State = GameState.GameMenu;
     }
     
     
@@ -99,45 +99,43 @@ public class Game
         Levels.AddRange(one, two, three, four);
         Level = 0;
 
-        var playerPos = new Vector2(Width / 2f - PlayerSize.X / 2f, Height - PlayerSize.Y);
-        player = new GameObject(playerPos, PlayerSize, new (PlayerVelocity, PlayerVelocity), Vector3.Zero,
+        var playerPos = new Vector2(Width / 2f - PlayerSize.X / 2f, Height - (PlayerSize.Y * 4));
+        player = new GameObject(playerPos, PlayerSize, new (PlayerVelocity, PlayerVelocity), Vector3.One,
             ResourceManager.GetTexture("paddle"));
+        player.Name = "player";
 
-        var ballPos = playerPos + new Vector2(PlayerSize.X / 2f - BallRadius, -BallRadius * 2f);
+        var ballPos = playerPos + new Vector2(PlayerSize.X / 2f - BallRadius, -BallRadius * 4f);
         ball = new BallObject(ballPos, BallRadius, InitialBallVelocity, ResourceManager.GetTexture("face"));
     }
 
-    public void ProcessInput(float dt)
+    public void ProcessInput(float dt, KeyboardKeyEventArgs e)
     {
         if (State == GameState.GameMenu)
         {
-            if (Keys[(int)KeyboardKeys.Enter] && !KeysProcessed[(int)KeyboardKeys.Enter])
+            if (e.Key == KeyboardKeys.Enter)
             {
                 State = GameState.GameActive;
-                KeysProcessed[(int)KeyboardKeys.Enter] = true;
+                ResetLevel();
+                ResetPlayer();
             }
             
-            if (Keys[(int)KeyboardKeys.W] && !KeysProcessed[(int)KeyboardKeys.W])
+            if (e.Key == KeyboardKeys.W)
             {
                 Level = (Level + 1) % 4;
-                KeysProcessed[(int)KeyboardKeys.W] = true;
             }
-            if (Keys[(int)KeyboardKeys.S] && !KeysProcessed[(int)KeyboardKeys.S])
+            if (e.Key == KeyboardKeys.S)
             {
                 if (Level > 0)
                     --Level;
                 else
                     Level = 3;
-                
-                KeysProcessed[(int)KeyboardKeys.S] = true;
             }
         }
 
         if (State == GameState.GameWin)
         {
-            if (Keys[(int)KeyboardKeys.Enter])
+            if (e.Key == KeyboardKeys.Enter)
             {
-                KeysProcessed[(int)KeyboardKeys.Enter] = true;
                 effects.Chaos = false;
                 State = GameState.GameActive;
             }
@@ -148,7 +146,7 @@ public class Game
             var velocity = dt * PlayerVelocity;
             
             // move playerboard
-            if (Keys[(int)KeyboardKeys.A])
+            if (e.Key == KeyboardKeys.A)
             {
                 if (player.Position.X >= 0)
                 {
@@ -160,7 +158,7 @@ public class Game
                 }
             }
             
-            if (Keys[(int)KeyboardKeys.D])
+            if (e.Key == KeyboardKeys.D)
             {
                 if (player.Position.X <= Width - player.Size.X)
                 {
@@ -172,9 +170,9 @@ public class Game
                 }
             }
 
-            if (Keys[(int)KeyboardKeys.Escape])
+            if (e.Key == KeyboardKeys.Space)
             {
-                ball.Stuck = true;
+                ball.Stuck = false;
             }
         }
     }
@@ -221,10 +219,11 @@ public class Game
 
     public void Render()
     {
+        Console.WriteLine(State);
         // begin rendering to postprocessing framebuffer
         effects.BeginRender();
             // draw background
-            renderer.DrawSprite(ResourceManager.GetTexture("background"), Vector2.Zero, new (Width, Height), 0.0f, Vector3.One);
+            renderer.DrawSprite(ResourceManager.GetTexture("background"), Vector2.One, new (Width, Height), 0.0f, Vector3.One);
             // draw level
             Levels[Level].Draw(renderer);
             // draw player
@@ -346,13 +345,13 @@ public class Game
     public void ResetLevel()
     {
         if (Level == 0) 
-            Levels[0].Load("levels/one.lvl", Width, Height / 2);
+            Levels[0].Load("Levels/one.lvl", Width, Height / 2);
         else if (Level == 1)
-            Levels[1].Load("levels/two.lvl", Width, Height / 2);
+            Levels[1].Load("Levels/two.lvl", Width, Height / 2);
         else if (Level == 2)
-            Levels[2].Load("levels/three.lvl", Width, Height / 2);
+            Levels[2].Load("Levels/three.lvl", Width, Height / 2);
         else if (Level == 3)
-            Levels[3].Load("levels/four.lvl", Width, Height / 2);
+            Levels[3].Load("Levels/four.lvl", Width, Height / 2);
 
         Lives = 3;
     }
@@ -361,8 +360,8 @@ public class Game
     {
         // reset player/ball stats
         player.Size = PlayerSize;
-        player.Position = new (Width / 2.0f - PlayerSize.X / 2.0f, Height - PlayerSize.Y);
-        ball.Reset(player.Position + new Vector2(PlayerSize.X / 2.0f - BallRadius, -(BallRadius * 2.0f)), InitialBallVelocity);
+        player.Position = new Vector2(Width / 2f - PlayerSize.X / 2f, Height - (PlayerSize.Y * 4));
+        ball.Reset(player.Position + new Vector2(PlayerSize.X / 2.0f - BallRadius, -(BallRadius * 4.0f)), InitialBallVelocity);
         // also disable all active powerups
         effects.Chaos = effects.Confuse = false;
         ball.PassThrough = ball.Sticky = false;

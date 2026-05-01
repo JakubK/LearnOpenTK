@@ -58,10 +58,18 @@ public class ResourceManager
             texture.ImageFormat = PixelFormat.Rgba;
         }
         
-        
         StbImage.stbi_set_flip_vertically_on_load(1);
         using var stream = File.OpenRead(file);
-        var image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+        ImageResult? image;
+        if (alpha)
+        {
+            image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+        }
+        else
+        {
+            image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlue);
+        }
+        Console.WriteLine("Loading " + file);
         texture.Generate(image.Width, image.Height, image.Data);
 
         return texture;

@@ -27,13 +27,14 @@ namespace LearnOpenTK
             CursorState = CursorState.Grabbed;
         }
 
+        private static float _deltaTime;
+        
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
 
-            var deltaTime = (float)e.Time;
-            breakout.ProcessInput(deltaTime);
-            breakout.Update(deltaTime);
+            _deltaTime = (float)e.Time;
+            breakout.Update(_deltaTime);
             
             GL.ClearColor(0, 0, 0, 1);
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -42,15 +43,17 @@ namespace LearnOpenTK
             SwapBuffers();
         }
 
+
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             base.OnKeyDown(e);
 
+            breakout.ProcessInput(_deltaTime, e);
+            
             if (e.Key == Keys.Escape)
             {
                 Close();
             }
-            
         }
 
 

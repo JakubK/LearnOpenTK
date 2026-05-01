@@ -39,7 +39,7 @@ public class PostProcessor
         GL.RenderbufferStorageMultisample(
             RenderbufferTarget.Renderbuffer,
             4,
-            RenderbufferStorage.Rgba8,
+            RenderbufferStorage.Rgb8,
             width,
             height
         );        

@@ -4,6 +4,8 @@ namespace LearnOpenTK;
 
 public class GameObject
 {
+    public string Name { get; set; }
+    
     public Vector2 Position;
     public Vector2 Size;
     public Vector2 Velocity;
@@ -15,7 +17,7 @@ public class GameObject
     public bool IsSolid = false;
     public bool IsDestroyed = false;
 
-    public GameObject() : this(Vector2.Zero, Vector2.One, Vector2.Zero, Vector3.One, null)
+    public GameObject() : this(Vector2.Zero, Vector2.One, Vector2.Zero, Vector3.One, null!)
     {
     }
 
@@ -30,6 +32,6 @@ public class GameObject
 
     public virtual void Draw(SpriteRenderer renderer)
     {
-        renderer.DrawSprite(Sprite, Position, Size, Rotation, Color);
+        renderer.DrawSprite(Sprite!, Position, Size, Rotation, Color);
     }
 }
