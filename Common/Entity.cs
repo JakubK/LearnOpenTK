@@ -53,4 +53,21 @@ public class Entity
             child.ForceUpdateSelfAndChild();
         }
     }
+
+    public void DrawSelfAndChild(Frustum frustum, Shader shader, int display, int total)
+    {
+        // if (boundingVolume.isOnFrustum(frustum, Transform))
+        // {
+        //     shader.SetMatrix4("model", Transform.GetModelMatrix());
+        //     Model.Draw(shader);
+        //     display++;
+        // }
+        //
+        // total++;
+        //
+        // foreach (var child in Children)
+        // {
+        //     child.DrawSelfAndChild(frustum, shader, display, total);
+        // }
+    }
 }

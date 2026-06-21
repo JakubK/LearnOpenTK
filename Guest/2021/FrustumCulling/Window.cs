@@ -11,9 +11,12 @@ namespace LearnOpenTK
     // with several point lights
     public class Window : GameWindow
     {
+        private float sensitivity = 0.2f;
+        
         private Shader _modelShader;
 
         private Camera _camera;
+        private Camera _cameraSpy;
         private Model _model;
         private Entity _entity;
 
@@ -37,26 +40,30 @@ namespace LearnOpenTK
 
             _modelShader = new Shader("Shaders/model_loading.vs", "Shaders/model_loading.fs");
             
-            _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
+            _camera = new Camera(new Vector3(0, 10, 0), Size.X / (float)Size.Y);
+            _cameraSpy = new Camera(new Vector3(0, 10, 0), Size.X / (float)Size.Y);
+            
+            
             _model = new Model("Resources/planet.obj");
             _entity = new Entity(_model);
 
-            _entity.Transform.SetLocalPosition(new(10, 0, 0));
+            _entity.Transform.SetLocalPosition(Vector3.Zero);
             
-            var scale = 0.75f;
+            var scale = 1f;
             _entity.Transform.SetLocalScale(new(scale, scale, scale));
 
             var lastEntity = _entity;
-            for (int i = 0; i < 10; i++)
+            for (int x = 0; x < 20; x++)
             {
-                lastEntity.AddChild(_model);
-                lastEntity = lastEntity.Children.Last();
-                
-                // Set transform values
-                lastEntity.Transform.SetLocalPosition(new (10,0,0));
-                lastEntity.Transform.SetLocalScale(new (scale, scale, scale));
+                for (int z = 0; z < 20; z++)
+                {
+                    _entity.AddChild(_model);
+                    lastEntity = _entity.Children.Last();
+                    
+                    // Set transform values
+                    lastEntity.Transform.SetLocalPosition(new (x * 10f - 100f, 0f, z * 10f - 100f));
+                }
             }
-
             _entity.UpdateSelfAndChild();
             
 
@@ -71,19 +78,31 @@ namespace LearnOpenTK
 
             _modelShader.Use();
 
+
+
+            var camFrustum = Frustum.FromCamera(_camera, Size.X / (float)Size.Y,  MathHelper.DegreesToRadians(_camera.Fov), 0.1f, 100f);
+            _cameraSpy.ProcessMouseMovement(2, 0, sensitivity);            
             _modelShader.SetMatrix4("view", _camera.GetViewMatrix());
             _modelShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
+            
+            // draw scene graph
+            var total = 0;
+            var display = 0;
 
-            var lastEntity = _entity;
-            while (lastEntity.Children.Count > 0)
-            {
-                _modelShader.SetMatrix4("model", lastEntity.Transform.GetModelMatrix());
-                lastEntity.Model.Draw(_modelShader);
-                lastEntity = lastEntity.Children.Last();
-            }
-
-            _entity.Transform.SetLocalRotation(new(0, _entity.Transform.GetLocalRotation().Y + 20 * (float)e.Time, 0));
+            _entity.DrawSelfAndChild(camFrustum, _modelShader, display, total);
+            Console.WriteLine("Total process in CPU: " + total + " / Total send to GPU: " + display);
             _entity.UpdateSelfAndChild();
+            
+            // var lastEntity = _entity;
+            // while (lastEntity.Children.Count > 0)
+            // {
+            //     _modelShader.SetMatrix4("model", lastEntity.Transform.GetModelMatrix());
+            //     lastEntity.Model.Draw(_modelShader);
+            //     lastEntity = lastEntity.Children.Last();
+            // }
+            //
+            // _entity.Transform.SetLocalRotation(new(0, _entity.Transform.GetLocalRotation().Y + 20 * (float)e.Time, 0));
+            // _entity.UpdateSelfAndChild();
             
             SwapBuffers();
         }
@@ -105,7 +124,6 @@ namespace LearnOpenTK
             }
 
             const float cameraSpeed = 1.5f;
-            const float sensitivity = 0.2f;
 
             if (input.IsKeyDown(Keys.W))
             {

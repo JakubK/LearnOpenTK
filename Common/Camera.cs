@@ -115,5 +115,26 @@ namespace LearnOpenTK.Common
             _right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
             _up = Vector3.Normalize(Vector3.Cross(_right, _front));
         }
+
+        public void ProcessMouseMovement(float xOffset, float yOffset, float sensitivity, bool constrainPitch = true)
+        {
+            xOffset *= sensitivity;
+            yOffset *= sensitivity;
+
+            Yaw += xOffset;
+            Pitch += yOffset;
+
+            // make sure that when pitch is out of bounds, screen doesn't get flipped
+            if (constrainPitch)
+            {
+                if (Pitch > 89.0f)
+                    Pitch = 89.0f;
+                if (Pitch < -89.0f)
+                    Pitch = -89.0f;
+            }
+
+            // update Front, Right and Up Vectors using the updated Euler angles
+            UpdateVectors();
+        }
     }
 }
