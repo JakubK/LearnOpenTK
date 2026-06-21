@@ -3,6 +3,7 @@
     <RootNamespace>LearnOpenTK.Common</RootNamespace>
     <AssemblyName>LearnOpenTK.Common</AssemblyName>
     <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
