@@ -84,6 +84,9 @@
         <Project Path="Chapter7/2-Text-Rendering/2-Text-Rendering.csproj" />
         <Project Path="Chapter7/3-Full-Game/3-Full-Game.csproj" />
     </Folder>
+    <Folder Name="/Guest/2020/">
+        <Project Path="Guest/2020/Oit/Oit.csproj" />
+    </Folder>
 
   <Project Path="Common/Common.csproj" />
 </Solution>
