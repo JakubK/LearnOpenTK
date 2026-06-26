@@ -4,17 +4,17 @@ public abstract class BoundingVolume
 {
     public abstract bool IsOnFrustum(Frustum frustum, Transform transform);
 
-    public abstract bool IsOnForwardPlane(Plane plane);
+    public abstract bool IsOnOrForwardPlane(Plane plane);
 
-    public bool IsOnFrustum(Frustum frustum)
+    public bool IsOnFrustum(Frustum camFrustum)
     {
         return (
-            IsOnForwardPlane(frustum.LeftFace)
-            && IsOnForwardPlane(frustum.RightFace)
-            && IsOnForwardPlane(frustum.TopFace)
-            && IsOnForwardPlane(frustum.BottomFace)
-            && IsOnForwardPlane(frustum.NearFace)
-            && IsOnForwardPlane(frustum.FarFace)
+            IsOnOrForwardPlane(camFrustum.LeftFace)
+            && IsOnOrForwardPlane(camFrustum.RightFace)
+            && IsOnOrForwardPlane(camFrustum.TopFace)
+            && IsOnOrForwardPlane(camFrustum.BottomFace)
+            && IsOnOrForwardPlane(camFrustum.NearFace)
+            && IsOnOrForwardPlane(camFrustum.FarFace)
         );
     }
 }

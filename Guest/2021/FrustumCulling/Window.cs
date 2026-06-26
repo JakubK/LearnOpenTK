@@ -77,32 +77,19 @@ namespace LearnOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             _modelShader.Use();
-
-
-
+            
             var camFrustum = Frustum.FromCamera(_camera, Size.X / (float)Size.Y,  MathHelper.DegreesToRadians(_camera.Fov), 0.1f, 100f);
-            _cameraSpy.ProcessMouseMovement(2, 0, sensitivity);            
+            _cameraSpy.ProcessMouseMovement(2, 0, sensitivity);   
             _modelShader.SetMatrix4("view", _camera.GetViewMatrix());
             _modelShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
             
             // draw scene graph
-            var total = 0;
+            var total = -1;
             var display = 0;
 
-            _entity.DrawSelfAndChild(camFrustum, _modelShader, display, total);
+            _entity.DrawSelfAndChild(camFrustum, _modelShader, ref display, ref total);
             Console.WriteLine("Total process in CPU: " + total + " / Total send to GPU: " + display);
             _entity.UpdateSelfAndChild();
-            
-            // var lastEntity = _entity;
-            // while (lastEntity.Children.Count > 0)
-            // {
-            //     _modelShader.SetMatrix4("model", lastEntity.Transform.GetModelMatrix());
-            //     lastEntity.Model.Draw(_modelShader);
-            //     lastEntity = lastEntity.Children.Last();
-            // }
-            //
-            // _entity.Transform.SetLocalRotation(new(0, _entity.Transform.GetLocalRotation().Y + 20 * (float)e.Time, 0));
-            // _entity.UpdateSelfAndChild();
             
             SwapBuffers();
         }

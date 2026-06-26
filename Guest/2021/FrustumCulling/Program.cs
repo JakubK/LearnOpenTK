@@ -11,7 +11,7 @@ namespace LearnOpenTK
             var nativeWindowSettings = new NativeWindowSettings()
             {
                 ClientSize = new Vector2i(800, 600),
-                Title = "LearnOpenTK - 2020 Guest Oit",
+                Title = "LearnOpenTK - 2021 Guest FrustumCulling",
                 // This is needed to run on macos
                 Flags = ContextFlags.ForwardCompatible,
             };

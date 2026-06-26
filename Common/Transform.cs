@@ -66,4 +66,28 @@ public class Transform
         _model = parentModelMatrix * GetLocalModelMatrix();
         IsDirty = false;
     }
+
+    public Vector4 GetRight()
+    {
+        return _model.Column0;
+    }
+    
+    public Vector4 GetUp()
+    {
+        return _model.Column1;
+    }
+    
+    public Vector4 GetForward()
+    {
+        return _model.Column2;
+    }
+
+    public Vector3 GetGlobalScale()
+    {
+        var right = _model.Column0;
+        var up = _model.Column1;
+        var backward = _model.Column2;
+
+        return new Vector3(right.Length, up.Length, backward.Length);
+    }
 }
