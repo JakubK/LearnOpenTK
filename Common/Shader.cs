@@ -17,7 +17,7 @@ public class Shader
     // Shaders are written in GLSL, which is a language very similar to C in its semantics.
     // The GLSL source is compiled *at runtime*, so it can optimize itself for the graphics card it's currently being used on.
     // A commented example of GLSL can be found in shader.vs.
-    public Shader(string vertPath, string fragPath, string? geometryPath = null)
+    public Shader(string vertPath, string fragPath, string? geometryPath = null, string? tcsPath = null, string? tesPath = null)
     {
         // There are several different types of shaders, but the only two you need for basic rendering are the vertex and fragment shaders.
         // The vertex shader is responsible for moving around vertices, and uploading that data to the fragment shader.
@@ -43,13 +43,31 @@ public class Shader
         GL.ShaderSource(fragmentShader, shaderSource);
         CompileShader(fragmentShader);
 
-        int geometryShader = -1;
+        var geometryShader = -1;
         if (!string.IsNullOrEmpty(geometryPath))
         {
             shaderSource = File.ReadAllText(geometryPath);
             geometryShader = GL.CreateShader(ShaderType.GeometryShader);
             GL.ShaderSource(geometryShader, shaderSource);
             CompileShader(geometryShader);
+        }
+
+        var tcsShader = -1;
+        if (!string.IsNullOrEmpty(tcsPath))
+        {
+            shaderSource = File.ReadAllText(tcsPath);
+            tcsShader = GL.CreateShader(ShaderType.TessControlShader);
+            GL.ShaderSource(tcsShader, shaderSource);
+            CompileShader(tcsShader);
+        }
+        
+        var tesShader = -1;
+        if (!string.IsNullOrEmpty(tesPath))
+        {
+            shaderSource = File.ReadAllText(tesPath);
+            tesShader = GL.CreateShader(ShaderType.TessEvaluationShader);
+            GL.ShaderSource(tesShader, shaderSource);
+            CompileShader(tesShader);
         }
 
         // These two shaders must then be merged into a shader program, which can then be used by OpenGL.
@@ -64,6 +82,16 @@ public class Shader
             GL.AttachShader(Handle, geometryShader);
         }
 
+        if (!string.IsNullOrEmpty(tcsPath))
+        {
+            GL.AttachShader(Handle, tcsShader);
+        }
+        
+        if (!string.IsNullOrEmpty(tesPath))
+        {
+            GL.AttachShader(Handle, tesShader);
+        }
+
         // And then link them together.
         LinkProgram(Handle);
 
@@ -74,6 +102,16 @@ public class Shader
         if (!string.IsNullOrEmpty(geometryPath))
         {
             GL.DetachShader(Handle, geometryShader);
+        }
+
+        if (!string.IsNullOrEmpty(tcsPath))
+        {
+            GL.DetachShader(Handle, tcsShader);
+        }
+        
+        if (!string.IsNullOrEmpty(tesPath))
+        {
+            GL.DetachShader(Handle, tesShader);
         }
 
         GL.DeleteShader(fragmentShader);
