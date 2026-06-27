@@ -137,7 +137,7 @@ namespace LearnOpenTK
 
             _heightMapShader.SetMatrix4("view", _camera.GetViewMatrix());
             _heightMapShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
-            // Console.WriteLine(_camera.Position.Y);
+
             var model = Matrix4.Identity;
             _heightMapShader.SetMatrix4("model", model);
             

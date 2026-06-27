@@ -89,6 +89,8 @@
         <Project Path="Guest/2020/Oit/Oit.csproj" />
     </Folder>
     <Folder Name="/Guest/2021/">
+        <Project Path="Guest/2021/Csm/Csm.csproj" />
+        <Project Path="Guest/2021/Dsa/Dsa.csproj" />
         <Project Path="Guest/2021/FrustumCulling/FrustumCulling.csproj" />
         <Project Path="Guest/2021/SceneGraph/SceneGraph.csproj" />
         <Project Path="Guest/2021/TesselationTerrainCpuSrc/TesselationTerrainCpuSrc.csproj" />

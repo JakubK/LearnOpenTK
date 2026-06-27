@@ -11,7 +11,10 @@ namespace LearnOpenTK
     // with several point lights
     public class Window : GameWindow
     {
-        private Shader _modelShader;
+        private Shader _shader;
+        private Shader _simpleDepthShader;
+        private Shader _debugDepthQuad;
+        private Shader _debugCascadeShader;
 
         private Camera _camera;
         private Model _model;
@@ -33,8 +36,10 @@ namespace LearnOpenTK
 
             GL.Enable(EnableCap.DepthTest);
 
-
-            _modelShader = new Shader("Shaders/model.vs", "Shaders/model.fs");
+            _shader = new Shader("Shaders/shadow_mapping.vs", "Shaders/shadow_mapping.fs");
+            _simpleDepthShader = new Shader("Shaders/shadow_mapping_depth.vs", "Shaders/shadow_mapping_depth.fs", "Shaders/shadow_mapping_depth.gs");
+            _debugDepthQuad = new Shader("Shaders/debug_quad.vs", "Shaders/debug_quad.fs");
+            _debugCascadeShader = new Shader("Shaders/debug_cascade.vs", "Shaders/debug_cascade.fs");
             
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
             _model = new Model("Resources/backpack.obj");
@@ -48,17 +53,7 @@ namespace LearnOpenTK
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            _modelShader.Use();
-
-            _modelShader.SetMatrix4("view", _camera.GetViewMatrix());
-            _modelShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
-            
-            Matrix4 model = Matrix4.CreateTranslation(new Vector3(0.0f, 0.0f, 0.0f));
-            model *= Matrix4.CreateFromAxisAngle(new Vector3(1.0f, 0.3f, 0.5f), 0);
-            _modelShader.SetMatrix4("model", model);
-            
-
-            _model.Draw(_modelShader);
+      
 
             SwapBuffers();
         }
