@@ -84,7 +84,7 @@ namespace LearnOpenTK
             _modelShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
             
             // draw scene graph
-            var total = -1;
+            var total = 0;
             var display = 0;
 
             _entity.DrawSelfAndChild(camFrustum, _modelShader, ref display, ref total);

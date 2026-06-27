@@ -67,7 +67,7 @@ public class Entity
             Model.Draw(shader);
             display++;
         }
-        
+
         total++;
         
         foreach (var child in Children)

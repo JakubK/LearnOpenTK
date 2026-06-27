@@ -1,3 +1,4 @@
+using System;
 using OpenTK.Mathematics;
 
 namespace LearnOpenTK.Common;
@@ -23,7 +24,8 @@ public class AABB : BoundingVolume
     {
         //Get global scale thanks to our transform
         // var globalCenter = transform.GetModelMatrix() * new Vector4(_center, 1f);
-        var globalCenter =  new Vector4(_center, 1f) * transform.GetModelMatrix();
+        var globalCenter = new Vector4(_center, 1f) * transform.GetModelMatrix();
+        
         
         // Scaled orientation
         var right = transform.GetRight() * _extents.X;

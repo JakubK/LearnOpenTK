@@ -84,10 +84,6 @@ public class Transform
 
     public Vector3 GetGlobalScale()
     {
-        var right = _model.Column0;
-        var up = _model.Column1;
-        var backward = _model.Column2;
-
-        return new Vector3(right.Length, up.Length, backward.Length);
+        return new Vector3(GetRight().Length, GetUp().Length, GetForward().Length);
     }
 }
