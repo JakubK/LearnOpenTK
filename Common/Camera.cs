@@ -29,7 +29,8 @@ namespace LearnOpenTK.Common
         private float _fov = MathHelper.PiOver2;
 
         public float DepthFar = 1000f;
-
+        public float DepthNear = 0.01f;
+        
         public Camera(Vector3 position, float aspectRatio)
         {
             Position = position;
@@ -97,7 +98,7 @@ namespace LearnOpenTK.Common
         // Get the projection matrix using the same method we have used up until this point
         public Matrix4 GetProjectionMatrix()
         {
-            return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, DepthFar);
+            return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, DepthNear, DepthFar);
         }
 
         // This function is going to update the direction vertices using some of the math learned in the web tutorials.
