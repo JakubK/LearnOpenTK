@@ -333,15 +333,15 @@ namespace LearnOpenTK
                 exposure += 0.001f;
             }
             
-            if (input.IsKeyDown(Keys.KeyPad1))
+            if (input.IsKeyDown(Keys.R))
             {
                 programChoice = 1;
             }
-            if (input.IsKeyDown(Keys.KeyPad2))
+            if (input.IsKeyDown(Keys.T))
             {
                 programChoice = 2;
             }
-            if (input.IsKeyDown(Keys.KeyPad3))
+            if (input.IsKeyDown(Keys.Y))
             {
                 programChoice = 3;
             }
