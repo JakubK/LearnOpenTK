@@ -99,6 +99,7 @@
     <Folder Name="/Guest/2022/">
         <Project Path="Guest/2022/ComputeShader/ComputeShader.csproj" />
         <Project Path="Guest/2022/PhysicallyBasedBloom/PhysicallyBasedBloom.csproj" />
+        <Project Path="Guest\2022\AreaLight\AreaLight.csproj" />
     </Folder>
 
   <Project Path="Common/Common.csproj" />
